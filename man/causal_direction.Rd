@@ -6,7 +6,7 @@
 \usage{
 causal_direction(topic,
                  relation_df,
-                 causal_threshold = 50,
+                 relation_threshold = 50,
                  LLM_model = "gpt-4o",
                  max_tokens = 2000,
                  update_key = FALSE,
@@ -17,11 +17,11 @@ causal_direction(topic,
 
 \item{relation_df}{A dataframe with a unique pair of variables on each row and the probability of the existence of a causal relationship between these variables. (The \code{relation_df} output of the \code{\link{causal_relation}} function).}
 
-\item{causal_threshold}{A number (defaults to \code{50}) that indicates the minimum probability required for a causal relationship to be included.}
+\item{relation_threshold}{A number (defaults to \code{50}). Only variable pairs with a probability of a causal relationship above this threshold are assessed.}
 
-\item{LLM_model}{The LLM model that should be used to generate output: \code{"gpt-4o"} (default), \code{"gpt-4"}, \code{"gpt-4-turbo"} \code{"gpt-3.5-turbo"}, \code{"llama-3"} (specifically points to Llama-3-70B-Chat-hf, accessed via Hugging Face), or \code{"mixtral"} (specifically points to Mixtral-8x7B-Instruct-v0.1, accessed via Together.ai).}
+\item{LLM_model}{The LLM that should be used to generate output. Either one of the built-in OpenAI models (\code{"gpt-4o"} (default), \code{"gpt-4"}, \code{"gpt-4-turbo"}, \code{"gpt-3.5-turbo"}), or any model from a supported provider written as \code{"<provider>/<model name>"} (providers: \code{openai}, \code{deepseek}, \code{together}, \code{huggingface}; e.g., \code{"huggingface/meta-llama/Llama-3.3-70B-Instruct"} or \code{"huggingface/moonshotai/Kimi-K2.6"}). The model must return log probabilities; use \code{\link{check_llm}()} to check whether a model can be used.}
 
-\item{max_tokens}{The maximum number of tokens the LLM should generate. Be careful when adjusting this argument. Reducing the maximum token limit will reduce the cost but may result in incomplete answers. Conversely, increasing the token limit can be advantageous for obtaining more detailed responses. The maximum number of tokens depends on the model (\code{6000} for \code{"gpt-4o"}, \code{"gpt-4"}, and \code{"gpt-4-turbo"}, \code{3000} for \code{"gpt-3.5-turbo"}, and \code{2000} for \code{"mixtral"}).}
+\item{max_tokens}{The maximum number of tokens the LLM should generate. Be careful when adjusting this argument. Reducing the maximum token limit will reduce the cost but may result in incomplete answers. Conversely, increasing the token limit can be advantageous for obtaining more detailed responses. For the built-in models, the maximum is \code{6000} for \code{"gpt-4o"}, \code{"gpt-4"} and \code{"gpt-4-turbo"}, and \code{3000} for \code{"gpt-3.5-turbo"}. For other models, any whole number above 0 is accepted; check the limit of the model you use.}
 
 \item{update_key}{If \code{update_key = TRUE}, the function will prompt the user for a new API key and update the saved key. If \code{update_key = FALSE} (default), the function will use the existing API key if available.}
 

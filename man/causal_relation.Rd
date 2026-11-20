@@ -16,9 +16,9 @@ causal_relation(topic,
 
 \item{variable_list}{A vector containing all variables that need to be included in the CLD.}
 
-\item{LLM_model}{The LLM model that should be used to generate output: \code{"gpt-4o"} (default), \code{"gpt-4"}, \code{"gpt-4-turbo"} \code{"gpt-3.5-turbo"}, \code{"llama-3"} (specifically points to Llama-3-70B-Chat-hf, accessed via Hugging Face), or \code{"mixtral"} (specifically points to Mixtral-8x7B-Instruct-v0.1, accessed via Together.ai).}
+\item{LLM_model}{The LLM that should be used to generate output. Either one of the built-in OpenAI models (\code{"gpt-4o"} (default), \code{"gpt-4"}, \code{"gpt-4-turbo"}, \code{"gpt-3.5-turbo"}), or any model from a supported provider written as \code{"<provider>/<model name>"} (providers: \code{openai}, \code{deepseek}, \code{together}, \code{huggingface}; e.g., \code{"huggingface/meta-llama/Llama-3.3-70B-Instruct"} or \code{"huggingface/moonshotai/Kimi-K2.6"}). The model must return log probabilities; use \code{\link{check_llm}()} to check whether a model can be used.}
 
-\item{max_tokens}{The maximum number of tokens the LLM should generate. Be careful when adjusting this argument. Reducing the maximum token limit will reduce the cost but may result in incomplete answers. Conversely, increasing the token limit can be advantageous for obtaining more detailed responses. The maximum number of tokens depends on the model (\code{6000} for \code{"gpt-4o"}, \code{"gpt-4"}, and \code{"gpt-4-turbo"}, \code{3000} for \code{"gpt-3.5-turbo"}, and \code{2000} for \code{"mixtral"}).}
+\item{max_tokens}{The maximum number of tokens the LLM should generate. Be careful when adjusting this argument. Reducing the maximum token limit will reduce the cost but may result in incomplete answers. Conversely, increasing the token limit can be advantageous for obtaining more detailed responses. For the built-in models, the maximum is \code{6000} for \code{"gpt-4o"}, \code{"gpt-4"} and \code{"gpt-4-turbo"}, and \code{3000} for \code{"gpt-3.5-turbo"}. For other models, any whole number above 0 is accepted; check the limit of the model you use.}
 
 \item{update_key}{If \code{update_key = TRUE}, the function will prompt the user for a new API key and update the saved key. If \code{update_key = FALSE} (default), the function will use the existing API key if available.}
 
@@ -51,7 +51,7 @@ causal_relation(topic,
 }
 }
 \description{
-\code{causal_relation()} will generate all possible unique pairs of variables (e.g. 4 variables will give 5 * (5 - 1) / 2 = 10 unique pairs). It will then iterate through all these pairs and ask a Large Language Model (LLM) to indicate whether there is a causal or non-causal relationship between the variables.
+\code{causal_relation()} will generate all possible unique pairs of variables (e.g. 5 variables will give 5 * (5 - 1) / 2 = 10 unique pairs). It will then iterate through all these pairs and ask a Large Language Model (LLM) to indicate whether there is a causal or non-causal relationship between the variables.
 }
 \details{
 To create a CLD from scratch, the functions in this R-package should be used in the following order:

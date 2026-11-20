@@ -1,4 +1,4 @@
-rel <- causal_relation(topic = "Addiction",
+rel <- causal_relation(topic = "addiction",
                        variable_list = vars$final_list,
                        LLM_model = "gpt-4o",
                        max_tokens = 2000,

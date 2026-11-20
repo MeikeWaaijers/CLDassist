@@ -1,5 +1,5 @@
 # Program Name: CLDassist
-# Description: This function interacts with Large Language Model (LLM) APIs and extracts their output.
+# Description: This function retrieves the API key for a Large Language Model (LLM) service.
 # Copyright (C) <2024> <Meike Waaijers>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -20,40 +20,40 @@
 ## get_api_key helper function
 
 get_api_key <- function(service_name, update_key = FALSE) {
-  # Check if running on shinyapps.io
+
+  # Environment variable and sign-up page per service
+  env_vars <- c(openai = "OPENAI_API_KEY",
+                togetherai = "TOGETHER_API_KEY",
+                huggingface = "HF_TOKEN",
+                deepseek = "DEEPSEEK_API_KEY")
+
+  signup_pages <- c(openai = "https://platform.openai.com/account/api-keys",
+                    togetherai = "https://api.together.xyz/settings/api-keys",
+                    huggingface = "https://huggingface.co/settings/tokens",
+                    deepseek = "https://platform.deepseek.com/api_keys")
+
+  # 1. Use the environment variable for this service if it is set (e.g., on shinyapps.io, in CI, or set by the user)
+  env_var <- if (service_name %in% names(env_vars)) env_vars[[service_name]] else toupper(paste0(service_name, "_API_KEY"))
+  api_key <- Sys.getenv(env_var)
+  if (nzchar(api_key) && !update_key) {
+    return(api_key)
+  }
+
+  # Check if running on shinyapps.io or in a CI environment (no interactive input possible)
   shinyapps <- Sys.getenv("R_CONFIG_ACTIVE") == "shinyapps"
-  # Check if running shiny app
-  if (shinyapps) {
-    # Attempt to retrieve the API key from environment variable
-    api_key <- Sys.getenv("OPENAI_API_KEY")
-
-    if (nzchar(api_key)) {
-      return(api_key)
-    }
-  }
-
-  # Check if running in a CI environment
   ci <- nzchar(Sys.getenv("CI"))
-
-  if (ci) {
-    # Attempt to retrieve the API key from environment variable
-    api_key <- Sys.getenv("OPENAI_API_KEY")
-
-    if (nzchar(api_key)) {
-      return(api_key)
-    }
+  if (shinyapps || ci) {
+    stop(sprintf("No API key found. Please set the '%s' environment variable.", env_var), call. = FALSE)
   }
 
-  # If not found in environment variable and not in CI, attempt to retrieve from keyring
-  if (!ci && !shinyapps && (update_key || nrow(keyring::key_list(service = service_name)) == 0)) {
+  # 2. Otherwise use the keyring; ask for the key if it is not stored yet (or if update_key = TRUE)
+  if (update_key || nrow(keyring::key_list(service = service_name)) == 0) {
     cat("To use this functionality, an API key needs to be set.\n")
     cat("Please follow these steps to resolve the issue:\n")
-    if (service_name == "huggingface") {
-      cat("1. Create an API key on https://huggingface.co/settings/tokens \n")
-    } else if (service_name == "openai") {
-      cat("1. Create an API key on https://platform.openai.com/account/api-keys \n")
-    } else if (service_name == "togetherai") {
-      cat("1. Create an API key on https://api.together.xyz/settings/api-keys \n")
+    if (service_name %in% names(signup_pages)) {
+      cat(sprintf("1. Create an API key on %s \n", signup_pages[[service_name]]))
+    } else {
+      cat(sprintf("1. Create an API key for '%s' \n", service_name))
     }
     cat("2. Please enter your API key below to add/update it.")
     answer <- readline("API key = ")

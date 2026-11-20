@@ -28,10 +28,11 @@ A list containing the following components:
     \itemize{
       \item \code{from}: The "from" node, otherwise known as the "cause" variable.
       \item \code{to}: The "to" node, otherwise known as the "dependent" variable.
-      \item \code{weight}: The weights associated with the causal relationship. In this case, the weights refer to the probability of there being a causal relationship.
-      \item \code{sign}: (Optional) The sign of the relationship (can be either "Positive", "Negative", or "Uncertain").
+      \item \code{weight}: The combined probability (the probability of a causal relationship multiplied by the direction probability).
+      \item \code{sign}: The sign of the causal relationship (can be either "Positive", "Negative", or "Uncertain").
+      \item \code{color}: Color of the edge in the plot (blue for positive, red for negative, black for uncertain).
+      \item \code{url}: One or more citation links returned by the LLM, stored as a semicolon-separated string.
       \item \code{explanation}: A short explanatory summary of how the identified literature discusses the causal relationship.
-      \item \code{literature}: One or more citation links returned by the LLM, stored as a semicolon-separated string.
     }}
 }
 }

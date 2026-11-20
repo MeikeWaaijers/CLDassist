@@ -42,10 +42,11 @@
 #'
 #' @param topic A character vector specifying the topic for which a CLD should be developed. If it is not feasible to identify a particular topic, the parameter can be set to NULL.
 #' @param variable_list A vector containing all variables that need to be included in the CLD.
-#' @param plot If \code{plot = TRUE} (default), the function will generate network plot(s) visualizing the edge list(s).
+#' @param plot If \code{plot = TRUE} (default), the function will generate a network plot visualizing the edge list. If \code{plot = FALSE}, the edge list is still returned but not plotted.
 #' @inheritParams var_list
 #'
 #' @returns
+#' If no variable pair has a probability of a causal relationship above 50\%, the function stops after \code{\link{causal_relation}} and returns \code{raw_LLM} and \code{relation_df}. If no causal direction has a probability above 50\%, it stops after \code{\link{causal_direction}} and returns \code{raw_LLM} and \code{direction_df}. Otherwise, the output is:
 #' \itemize{
 #'   \item \code{raw_LLM}: A dataframe containing the unprocessed LLM output along with some other LLM information, including:
 #'     \itemize{
@@ -74,25 +75,18 @@
 #'       \item \code{prob_var1_pos}: Probability of a positive relationship where var1 is the cause.
 #'       \item \code{prob_var1_neg}: Probability of a negative relationship where var1 is the cause.
 #'       \item \code{prob_var2_cause}: Probability of var2 being a cause variable.
-#'       \item \code{prob_var2_pos}: Probability of a positive relationship where var1 is the cause.
-#'       \item \code{prob_var2_neg}: Probability of a negative relationship where var1 is the cause.
+#'       \item \code{prob_var2_pos}: Probability of a positive relationship where var2 is the cause.
+#'       \item \code{prob_var2_neg}: Probability of a negative relationship where var2 is the cause.
 #'     }
 #' } \cr
 #' \itemize{
-#'   \item
-#' A plot and an edge list.
-#' An edge list is a list containing all the edges between nodes. These nodes symbolise variables, while the edges denote the causal relationships that link these variables.
-#'
-#' The specific outputted edge list is \code{dir_signs_edge_list}.
-#' This is an edge list for a direction probability dataframe with sign indication (for more information about different edge lists see \code{\link{cld_plot}}).
-#' \cr
-#' \cr
-#' \code{edge_list}: An edge list with 4 columns:
-#' \itemize{
+#'   \item \code{edge_list}: The \code{sign_edge_list} created by \code{\link{cld_plot}} (for more information about edge lists see \code{\link{cld_plot}}). An edge list with 5 columns:
+#'     \itemize{
 #'       \item \code{from}: Cause variable.
 #'       \item \code{to}: Dependent variable.
-#'       \item \code{weight}: Probability of a causal relationship between the Cause and Dependent variable.
+#'       \item \code{weight}: The combined probability (the probability of a causal relationship multiplied by the direction probability).
 #'       \item \code{sign}: Sign of the causal relationship (can be either "Positive", "Negative", or "Uncertain").
+#'       \item \code{color}: Color of the edge in the plot (blue for positive, red for negative, black for uncertain).
 #'     }
 #' }
 #'
@@ -104,7 +98,7 @@
 #'
 #' @seealso
 #' \code{\link{var_list}},
-#' \code{\link{causal_relation}},,
+#' \code{\link{causal_relation}},
 #' \code{\link{causal_direction}},
 #' \code{\link{causal_sign}},
 #' \code{\link{cld_plot}},
@@ -156,20 +150,7 @@ cld <- function(topic,
   stopifnot("'variable_list' should be a vector containing more than one variables." = is.vector(variable_list) && length(variable_list) > 1)
   stopifnot("All entries in 'variable_list' should be character strings." = all(sapply(variable_list, is.character)))
   stopifnot("'plot' should be a logical value." = is.logical(plot))
-  stopifnot("'LLM_model' should be 'gpt-4o', 'gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo', 'mixtral', or 'llama-3'." =
-              !is.null(custom_llm_fn) || LLM_model %in% c("mixtral", "gpt-4o", "gpt-4", "gpt-4-turbo", "gpt-3.5-turbo", "llama-3"))
-  stopifnot("For 'gpt-4o', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-4o") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
-  stopifnot("For 'gpt-4', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-4") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
-  stopifnot("For 'gpt-4-turbo', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-4-turbo") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
-  stopifnot("For 'gpt-3.5-turbo', 'max_tokens' should be a whole number above 0, and not higher than 3000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-3.5-turbo") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 3000))
-  stopifnot("For 'mixtral', 'max_tokens' should be a whole number above 0, and not higher than 2000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "mixtral") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 2000))
-  stopifnot("For 'llama-3', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "llama-3") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
+  .validate_llm_args(LLM_model, max_tokens, custom_llm_fn)
   stopifnot("'update_key' should be a logical value." = is.logical(update_key))
 
   if (!is.null(custom_llm_fn)) {
@@ -188,6 +169,27 @@ cld <- function(topic,
   caussign <- NULL
   cldplot <- NULL
 
+  # Message when a step is skipped (also shown as a notification in the Shiny app)
+  skip_message <- function(msg) {
+    message(msg)
+    if (is_shiny) shiny::showNotification(msg, type = "warning", duration = NULL)
+  }
+
+  # Combine the raw LLM output of the steps that were run
+  combine_raw <- function() {
+    parts <- list()
+    if (!is.null(causrel$raw_LLM)) parts[[length(parts) + 1]] <- cbind(which_fun = "causal_relation", var = NA, causrel$raw_LLM)
+    if (!is.null(causdir$raw_LLM)) parts[[length(parts) + 1]] <- cbind(which_fun = "causal_direction", causdir$raw_LLM)
+    if (!is.null(caussign$raw_LLM)) parts[[length(parts) + 1]] <- cbind(which_fun = "causal_sign", caussign$raw_LLM)
+    tryCatch(do.call(rbind, parts), error = function(e) {
+      if (is_shiny) {
+        shiny::req(FALSE, paste0("Error in raw LLM data processing: ", e$message))
+      } else {
+        stop(paste0("Error in raw LLM data processing: ", e$message))
+      }
+    })
+  }
+
   # Step 1: causal_relation
   tryCatch({
     causrel <- causal_relation(topic = topic,
@@ -205,6 +207,13 @@ cld <- function(topic,
     }
   })
 
+  # Stop early (and return what was found) if no variable pair is likely to be causal
+  if (!any(causrel$relation_df$prob_causal > 50)) {
+    skip_message("No variable pair has a probability of a causal relationship above 50%, so the direction and sign steps and the plot are skipped. The results so far are returned.")
+    return(list(raw_LLM = combine_raw(),
+                relation_df = causrel$relation_df))
+  }
+
   # Step 2: causal_direction
   tryCatch({
     causdir <- causal_direction(topic = topic,
@@ -221,10 +230,17 @@ cld <- function(topic,
     }
   })
 
+  # Stop early (and return what was found) if no causal direction is likely
+  if (!any(causdir$direction_df$prob_var1_cause > 50 | causdir$direction_df$prob_var2_cause > 50)) {
+    skip_message("No causal direction has a probability above 50%, so the sign step and the plot are skipped. The results so far are returned.")
+    return(list(raw_LLM = combine_raw(),
+                direction_df = causdir$direction_df))
+  }
+
   # Step 3: causal_sign
   tryCatch({
     caussign <- causal_sign(topic = topic,
-                            prob_df = causdir$direction_df,
+                            direction_df = causdir$direction_df,
                             LLM_model = LLM_model,
                             max_tokens = max_tokens,
                             update_key = update_key,
@@ -237,41 +253,25 @@ cld <- function(topic,
     }
   })
 
-  # Step 4: cld_plot (optional)
-  if (plot == TRUE) {
-    tryCatch({
-      cldplot <- cld_plot(topic = topic,
-                             dir_sign_df = caussign$sign_df)
-    }, error = function(e) {
-      if (is_shiny) {
-        shiny::req(FALSE, paste0("Error in cld_plot: ", e$message))
-      } else {
-        stop(paste0("Error in cld_plot: ", e$message))
-      }
-    })
-  }
-
-  # Initialize the output list
-  output <- list()
-  raw_LLM <- NULL
+  # Step 4: cld_plot (edge list is always created; plot only if plot = TRUE)
   tryCatch({
-    raw_LLM <- rbind(cbind(which_fun = "causal_relation", var = NA, causrel$raw_LLM),
-                     cbind(which_fun = "causal_direction", causdir$raw_LLM),
-                     cbind(which_fun = "causal_sign", caussign$raw_LLM))
+    cldplot <- cld_plot(topic = topic,
+                        sign_df = caussign$sign_df,
+                        plot = plot,
+                        legend = plot)
   }, error = function(e) {
     if (is_shiny) {
-      shiny::req(FALSE, paste0("Error in raw LLM data processing: ", e$message))
+      shiny::req(FALSE, paste0("Error in cld_plot: ", e$message))
     } else {
-      stop(paste0("Error in raw LLM data processing: ", e$message))
+      stop(paste0("Error in cld_plot: ", e$message))
     }
   })
 
-  output$raw_LLM <- raw_LLM
+  # Output
+  output <- list()
+  output$raw_LLM <- combine_raw()
   output$sign_df <- caussign$sign_df
-
-  if (plot == TRUE){
-    output$edge_list <- cldplot$dir_signs_edge_list
-  }
+  output$edge_list <- cldplot$sign_edge_list
 
   return(output)
 }

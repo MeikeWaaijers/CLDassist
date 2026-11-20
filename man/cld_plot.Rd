@@ -7,8 +7,7 @@
 cld_plot(topic,
          relation_df = NULL,
          direction_df = NULL,
-         rel_sign_df = NULL,
-         dir_sign_df = NULL,
+         sign_df = NULL,
          combine = TRUE,
          relation_threshold = 50,
          direction_threshold = 50,
@@ -24,38 +23,35 @@ cld_plot(topic,
 
 \item{relation_df}{A dataframe with a unique pair of variables on each row and the probability of the existence of a causal relationship between these variables. (The \code{relation_df} output of the \code{\link{causal_relation}} function).}
 
-\item{direction_df}{A dataframe with on every row a unique variable pair, the probability of the presence of a causal relationship between these variables, and the cause variable probability for each variable in the pair (The \code{direction_df} output from the \code{\link{causal_direction}}.}
+\item{direction_df}{A dataframe with on every row a unique variable pair, the probability of the presence of a causal relationship between these variables, and the cause variable probability for each variable in the pair (The \code{direction_df} output from the \code{\link{causal_direction}} function).}
 
-\item{rel_sign_df}{A dataframe containing all pairs of variables, the probability of a causal relationship between these variables, and the probability of a positive or negative causal relationship (the \code{sign_df} output of the \code{\link{causal_sign}} function when a \code{prob_causual_df} is inputted in the \code{\link{causal_sign}} function).}
+\item{sign_df}{A dataframe with on every row a unique variable pair, the probability of the presence of a causal relationship between these variables, the cause variable probability for each variable in the pair, and the probability of a positive or negative causal relationship (the \code{sign_df} output of the \code{\link{causal_sign}} function).}
 
-\item{dir_sign_df}{A dataframe with on every row a unique variable pair, the probability of the presence of a causal relationship between these variables, the cause variable probability for each variable in the pair, and the probability of a positive or negative causal relationship (the \code{sign_df} output of the \code{\link{causal_sign}} function when a \code{direction_df} is inputted in the \code{\link{causal_sign}} function).}
+\item{combine}{This argument has to be set when a \code{direction_df} or \code{sign_df} is inputted. If \code{combine = TRUE} (default), the probabilities of each variable being the cause are multiplied by the probability of a causal relationship. This gives the combined probability. If \code{combine = FALSE}, only the pure direction probabilities will be used as the edge weights without multiplying them with the relation probabilities.}
 
-\item{combine}{This argument has to be set when a \code{direction_df} or \code{dir_sign_df} is inputted. If \code{combine = TRUE} (default), the probabilities of each variable being the cause are multiplied by the probability of a causal relationship. This gives the combined probability. If \code{combine = FALSE}, only the pure direction probabilities will be used as the edge weights without multiplying them with the relation probabilities.}
+\item{relation_threshold}{A number (defaults to \code{50}) that indicates the minimum probability of a causal relationship (\code{prob_causal}) required for an edge to be shown in the plot. Only used when a \code{relation_df} is inputted.}
 
-\item{relation_threshold}{A number (defaults to \code{50}) that indicates the minimum probability required for a causal relationship to be included in the plot. If a \code{direction_df} or \code{dir_sign_df} is inputted an edge will only show up if both the relation probability and the direction probability are both higher than their respective threshold.}
+\item{direction_threshold}{A number (defaults to \code{50}) that indicates the minimum direction probability (\code{prob_var1_cause} or \code{prob_var2_cause}) required for an edge to be shown in the plot. Only used when a \code{direction_df} or \code{sign_df} is inputted and \code{combine = FALSE}.}
 
-\item{direction_threshold}{A number (defaults to \code{50}) that indicates the minimum probability required for a causal direction to be included in the plot. If a \code{direction_df} or \code{dir_sign_df} is inputted an edge will only show up if both the relation probability and the direction probability are both higher than their respective threshold.}
+\item{combine_threshold}{A number (defaults to \code{50}) that indicates the minimum combined probability (the probability of a causal relationship multiplied by the direction probability) required for an edge to be shown in the plot. Only used when a \code{direction_df} or \code{sign_df} is inputted and \code{combine = TRUE}.}
 
-\item{combine_threshold}{A number (defaults to \code{50}) that indicates the minimum combined probability required for an edge to be included in the plot.}
-
-\item{sign_threshold}{A number (defaults to \code{50}) that represents the minimum probability required to assign a sign to the cause-and-effect relationship in the plot.}
+\item{sign_threshold}{A number (defaults to \code{50}) that indicates the minimum probability of the most likely sign (positive or negative) required to assign that sign to an edge. If neither sign exceeds this threshold, the sign is set to "Uncertain".}
 
 \item{plot}{If \code{plot = TRUE} (default), the function will generate network plot(s) visualizing the edge list(s). If \code{plot = FALSE} only the edge list will be created but it will not be visualized.}
 
 \item{layout}{This argument controls the layout of the plot and is very similar to the \code{layout} argument of the \code{\link[qgraph]{qgraph}} package. If \code{layout = "average"} and multiple dataframes are inputted, all nodes will be placed in a joint layout (see \code{\link[qgraph:averageLayout]{averageLayout}}). If \code{layout = "average"} and only one dataframe is inputted, the plot will default to a force-embedded layout (same as the "spring" layout in the \code{\link[qgraph]{qgraph}} package). If \code{layout = "circle"}, all nodes will be placed in a single circle (see \code{\link[qgraph]{qgraph}}).}
 
-\item{legend}{If \code{legend = TRUE} (default), the network plot(s) will include a legend. If variable names are extremely long, it may be advisable to set the legend argument to FALSE to maintain plot readability.}
+\item{legend}{If \code{legend = TRUE} (default), the network plot(s) will include a legend. If variable names are extremely long, it may be advisable to set the legend argument to FALSE to maintain plot readability. This argument will be ignored if \code{plot = FALSE}.}
 
 \item{not_plot}{If \code{not_plot = TRUE}, the function will generate a "not plot", which is a network plot that visualizes edges that fall below a specified threshold (either the \code{relation_threshold}, \code{direction_threshold}, or \code{combine_threshold}, depending on the input dataframe and the \code{combine} argument). This effectively visualizes the relationships that are considered to be non-causal.}
 }
 \value{
-Either one, two, three, or four edge lists depending on how many probability dataframes were inputted:
+Either one, two, or three edge lists depending on how many probability dataframes were inputted:
 
 \itemize{
   \item \code{rel_edge_list}: Edge list for a relation probability dataframe.
   \item \code{dir_edge_list}: Edge list for a direction probability dataframe.
-  \item \code{rel_sign_edge_list}: Edge list for a relation probability dataframe with sign indication.
-  \item \code{dir_sign_edge_list}: Edge list for a direction probability dataframe with sign indication.
+  \item \code{sign_edge_list}: Edge list for a sign probability dataframe.
   } \cr
 
 The specific edge list structure varies based on the input:
@@ -64,15 +60,16 @@ The specific edge list structure varies based on the input:
     \itemize{
       \item \code{from}: The "from" node, otherwise known as the "cause" variable.
       \item \code{to}: The "to" node, otherwise known as the "dependent" variable.
-      \item \code{weight}: The weights associated with the causal relationship. In this case, the weights refer to the probability of there being a causal relationship.
+      \item \code{weight}: The weight of the edge. For a relation dataframe, this is the probability of a causal relationship. For a direction or sign dataframe, this is the combined probability (\code{combine = TRUE}) or the direction probability (\code{combine = FALSE}). Note that the edge list contains all variable pairs; the thresholds only determine which edges are shown in the plot.
     } \cr
-  \item When a sign probability dataframe is entered, the corresponding edge list will include a fourth column:
+  \item When a sign probability dataframe is entered, the corresponding edge list will include two more columns:
     \itemize{
       \item \code{sign}: The sign of the causal relationship (can be either "Positive", "Negative", or "Uncertain").
+      \item \code{color}: Color of the edge in the plot (blue for positive, red for negative, black for uncertain).
     }
-  \item If the \code{not_plot} argument is set to \code{TRUE} the edge list will have an additional column:
+  \item If \code{not_plot = TRUE} (and \code{plot = TRUE}), the edge list will have an additional column:
     \itemize{
-      \item \code{NOT_edge}: Contains values used to construct the "not plot" visualization. Edges with weights below a specified threshold (determined by \code{relation_threshold}, \code{direction_threshold}, or \code{combine_threshold}, based on the input dataframe and the \code{combine} argument) are assigned a value of 100, while edges meeting the threshold are assigned a value of 0. This makes it possible to visualize the relationships that are considered to be non-causal.
+      \item \code{NOT_weight}: Contains values used to construct the "not plot" visualization. Edges with weights below a specified threshold (determined by \code{relation_threshold}, \code{direction_threshold}, or \code{combine_threshold}, based on the input dataframe and the \code{combine} argument) are assigned a value of 100, while edges meeting the threshold are assigned a value of 0. This makes it possible to visualize the relationships that are considered to be non-causal.
     }
 }
 }
@@ -97,38 +94,30 @@ rel$relation_df
 data("dir")
 dir$direction_df
 
-
-# Relation & sign probability dataframe input
-data("rel_sign")
-rel_sign$sign_df
-
-# Direction & sign probability dataframe input
-data("dir_sign")
-dir_sign$sign_df
+# Sign probability dataframe input
+data("sign")
+sign$sign_df
 
 #---------------------------------------------------------------------------
-## Create all four edge lists & plots with default settings.
+## Create all three edge lists & plots with default settings.
 # For a readily available, pre-made output example see: data("edge_lists")
 edge_lists <- cld_plot(topic = "addiction",
                        relation_df = rel$relation_df,
                        direction_df = dir$direction_df,
-                       rel_sign_df = rel_sign$sign_df,
-                       dir_sign_df = dir_sign$sign_df)
+                       sign_df = sign$sign_df)
 
 # Check output
 edge_lists$rel_edge_list
 edge_lists$dir_edge_list
-edge_lists$rel_sign_edge_list
-edge_lists$dir_sign_edge_list
+edge_lists$sign_edge_list
 
 #---------------------------------------------------------------------------
 \dontrun{
-## Create all four edge lists & plots with a "circle" layout.
+## Create all three edge lists & plots with a "circle" layout.
 edge_lists <- cld_plot(topic = "addiction",
                        relation_df = rel$relation_df,
                        direction_df = dir$direction_df,
-                       rel_sign_df = rel_sign$sign_df,
-                       dir_sign_df = dir_sign$sign_df,
+                       sign_df = sign$sign_df,
                        layout = "circle")
 
 #---------------------------------------------------------------------------
@@ -140,18 +129,18 @@ dir_edge_list <- cld_plot(topic = "addiction",
                           direction_threshold = 10)
 
 #---------------------------------------------------------------------------
-## Create an edge list only for a direction with sign dataframe and use the combined probability.
+## Create an edge list only for a sign dataframe and use the combined probability.
 # Plot with combine_threshold set to 80.
 combine_edge_list <- cld_plot(topic = "addiction",
-                              dir_sign_df = dir_sign$sign_df,
+                              sign_df = sign$sign_df,
                               combine = TRUE,
                               combine_threshold = 80)
 
 #---------------------------------------------------------------------------
 ## Create a NOT plot for a relation dataframe
 not <- cld_plot(topic = "addiction",
-                        relation_df = rel$relation_df,
-                        not_plot = TRUE)
+                relation_df = rel$relation_df,
+                not_plot = TRUE)
 }
 
 }

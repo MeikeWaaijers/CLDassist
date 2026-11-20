@@ -29,7 +29,7 @@
 #' @usage
 #' causal_direction(topic,
 #'                  relation_df,
-#'                  causal_threshold = 50,
+#'                  relation_threshold = 50,
 #'                  LLM_model = "gpt-4o",
 #'                  max_tokens = 2000,
 #'                  update_key = FALSE,
@@ -42,7 +42,7 @@
 #'
 #' @param topic A character vector specifying the topic for which a CLD should be developed. If it is not feasible to identify a particular topic, the argument can be set to NULL.
 #' @param relation_df A dataframe with a unique pair of variables on each row and the probability of the existence of a causal relationship between these variables. (The \code{relation_df} output of the \code{\link{causal_relation}} function).
-#' @param causal_threshold A number (defaults to \code{50}) that indicates the minimum probability required for a causal relationship to be included.
+#' @param relation_threshold A number (defaults to \code{50}). Only variable pairs with a probability of a causal relationship above this threshold are assessed.
 #' @inheritParams var_list
 #'
 #' @returns
@@ -113,7 +113,7 @@
 ## causal_direction function
 causal_direction <- function(topic,
                              relation_df,
-                             causal_threshold = 50,
+                             relation_threshold = 50,
                              LLM_model = "gpt-4o",
                              max_tokens = 2000,
                              update_key = FALSE,
@@ -125,8 +125,8 @@ causal_direction <- function(topic,
       is.null(topic) ||
       (is.character(topic) && length(topic) == 1L && !is.na(topic) && nzchar(trimws(topic)))
   )
-  stopifnot("'causal_threshold' should be a number between 0 and 100, and cannot have more than two decimal points." =
-              is.numeric(causal_threshold) && causal_threshold >= 0 && causal_threshold <= 100 && round(causal_threshold, 2) == causal_threshold)
+  stopifnot("'relation_threshold' should be a number between 0 and 100, and cannot have more than two decimal points." =
+              is.numeric(relation_threshold) && relation_threshold >= 0 && relation_threshold <= 100 && round(relation_threshold, 2) == relation_threshold)
   stopifnot("'relation_df' should be a dataframe." = is.data.frame(relation_df))
   stopifnot("'relation_df' should have three columns named 'var1', 'var2' and 'prob_causal'." =
               ncol(relation_df) == 3 && all(paste(c("var1", "var2", "prob_causal"), collapse = ", ") == paste(names(relation_df), collapse = ", ")))
@@ -134,21 +134,9 @@ causal_direction <- function(topic,
               all(sapply(relation_df$var1, is.character)) && all(sapply(relation_df$var2, is.character)))
   stopifnot("All entries in 'relation_df$prob_causal' should be numeric and between 0 and 100." =
               all(sapply(relation_df$prob_causal, function(x) is.numeric(x) && x >= 0 && x <= 100)))
-  stopifnot("At least one variable pair should be classified as 'causal'." = sum(relation_df$prob_causal) > 0)
-  stopifnot("'LLM_model' should be 'gpt-4o', 'gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo', 'mixtral', or 'llama-3'." =
-              !is.null(custom_llm_fn) || LLM_model %in% c("mixtral", "gpt-4o", "gpt-4", "gpt-4-turbo", "gpt-3.5-turbo", "llama-3"))
-  stopifnot("For 'gpt-4o', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-4o") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
-  stopifnot("For 'gpt-4', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-4") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
-  stopifnot("For 'gpt-4-turbo', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-4-turbo") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
-  stopifnot("For 'gpt-3.5-turbo', 'max_tokens' should be a whole number above 0, and not higher than 3000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-3.5-turbo") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 3000))
-  stopifnot("For 'mixtral', 'max_tokens' should be a whole number above 0, and not higher than 2000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "mixtral") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 2000))
-  stopifnot("For 'llama-3', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "llama-3") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
+  stopifnot("At least one variable pair should have a 'prob_causal' above 'relation_threshold'." =
+              any(relation_df$prob_causal > relation_threshold))
+  .validate_llm_args(LLM_model, max_tokens, custom_llm_fn)
   stopifnot("'update_key' should be a logical value." = is.logical(update_key))
 
   if (!is.null(custom_llm_fn)) {
@@ -198,8 +186,8 @@ causal_direction <- function(topic,
   direction_df <- NULL
 
 
-  # get row_index of all variable pairs that were indicated to be causal at least once
-  row_index <- unique(which(relation_df[3] > causal_threshold, arr.ind = TRUE)[, 1])
+  # get row_index of all variable pairs with a probability of a causal relationship above relation_threshold
+  row_index <- unique(which(relation_df[3] > relation_threshold, arr.ind = TRUE)[, 1])
 
   # get names of the variables
   var_1 <- relation_df$var1
@@ -306,7 +294,7 @@ causal_direction <- function(topic,
       var1_cause <- .call_llm(prompt = var1_prompt,
                               system_prompt = system_prompt,
                               LLM_model = LLM_model,
-                              max_tokens = ifelse(LLM_model == "mixtral", 4, max_tokens),
+                              max_tokens = max_tokens,
                               update_key = update_key,
                               custom_llm_fn = custom_llm_fn)
 
@@ -319,7 +307,7 @@ causal_direction <- function(topic,
       var2_cause <- .call_llm(prompt = var2_prompt,
                               system_prompt = system_prompt,
                               LLM_model = LLM_model,
-                              max_tokens = ifelse(LLM_model == "mixtral", 4, max_tokens),
+                              max_tokens = max_tokens,
                               update_key = update_key,
                               custom_llm_fn = custom_llm_fn)
 
@@ -344,28 +332,15 @@ causal_direction <- function(topic,
   tryCatch({
 
     ## Var 1
-    if (LLM_model == "mixtral" | LLM_model == "llama-3"){
-      last_token_f_var1 <- NULL
-      for (i in row_index) {
-        last_token_t <- NULL
-        for (j in 1:length(logprobs_LLM_var1[[i]])){
-          last_token_t[[j]] <- logprobs_LLM_var1[[i]][[j]][[1]]
-          last_token_t[[j]]$top5_tokens <- trimws(tolower(last_token_t[[j]]$top5_tokens))
-        }
-        last_token_f_var1[[i]] <- last_token_t
+    last_token_f_var1 <- NULL
+    for (i in row_index) {
+      last_token_t <- NULL
+      for (j in 1:2){
+        lp <- logprobs_LLM_var1[[i]][[j]]
+        last_token_t[[j]] <- if (length(lp) == 0) data.frame(top5_tokens = character(), probability = numeric()) else lp[[length(lp)]] # empty if the call failed
+        last_token_t[[j]]$top5_tokens <- trimws(tolower(last_token_t[[j]]$top5_tokens))
       }
-
-    } else {
-
-      last_token_f_var1 <- NULL
-      for (i in row_index) {
-        last_token_t <- NULL
-        for (j in 1:length(logprobs_LLM_var1[[i]])){
-          last_token_t[[j]] <- logprobs_LLM_var1[[i]][[j]][[length(logprobs_LLM_var1[[i]][[j]])]]
-          last_token_t[[j]]$top5_tokens <- trimws(tolower(last_token_t[[j]]$top5_tokens))
-        }
-        last_token_f_var1[[i]] <- last_token_t
-      }
+      last_token_f_var1[[i]] <- last_token_t
     }
 
     all_prob_var1 <- list()
@@ -378,7 +353,7 @@ causal_direction <- function(topic,
         prob <- NULL
         k <- 1
         # Process each item in last_token
-        for (m in 1:nrow(last_token_f_var1[[l]][[g]])) {
+        for (m in seq_len(nrow(last_token_f_var1[[l]][[g]]))) {
           if (trimws(tolower(last_token_f_var1[[l]][[g]]$top5_tokens[m])) %in% valid_tokens) {
             # Filter and extract required values
             if (trimws(tolower(gsub("[\n]", "", last_token_f_var1[[l]][[g]]$top5_tokens[m]))) == "yes"){
@@ -399,27 +374,15 @@ causal_direction <- function(topic,
     }
 
     ## Var 2
-    if (LLM_model == "mixtral" | LLM_model == "llama-3"){
-      last_token_f_var2 <- NULL
-      for (i in row_index) {
-        last_token_t <- NULL
-        for (j in 1:length(logprobs_LLM_var2[[i]])){
-          last_token_t[[j]] <- logprobs_LLM_var2[[i]][[j]][[1]]
-          last_token_t[[j]]$top5_tokens <- trimws(tolower(last_token_t[[j]]$top5_tokens))
-        }
-        last_token_f_var2[[i]] <- last_token_t
+    last_token_f_var2 <- NULL
+    for (i in row_index) {
+      last_token_t <- NULL
+      for (j in 1:2){
+        lp <- logprobs_LLM_var2[[i]][[j]]
+        last_token_t[[j]] <- if (length(lp) == 0) data.frame(top5_tokens = character(), probability = numeric()) else lp[[length(lp)]] # empty if the call failed
+        last_token_t[[j]]$top5_tokens <- trimws(tolower(last_token_t[[j]]$top5_tokens))
       }
-
-    } else {
-      last_token_f_var2 <- NULL
-      for (i in row_index) {
-        last_token_t <- NULL
-        for (j in 1:length(logprobs_LLM_var2[[i]])){
-          last_token_t[[j]] <- logprobs_LLM_var2[[i]][[j]][[length(logprobs_LLM_var2[[i]][[j]])]]
-          last_token_t[[j]]$top5_tokens <- trimws(tolower(last_token_t[[j]]$top5_tokens))
-        }
-        last_token_f_var2[[i]] <- last_token_t
-      }
+      last_token_f_var2[[i]] <- last_token_t
     }
 
     all_prob_var2 <- list()
@@ -432,7 +395,7 @@ causal_direction <- function(topic,
         prob <- NULL
         k <- 1
         # Process each item in last_token
-        for (m in 1:nrow(last_token_f_var2[[l]][[g]])) {
+        for (m in seq_len(nrow(last_token_f_var2[[l]][[g]]))) {
           if (trimws(tolower(last_token_f_var2[[l]][[g]]$top5_tokens[m])) %in% valid_tokens) {
             # Filter and extract required values
             if (trimws(tolower(gsub("[\n]", "", last_token_f_var2[[l]][[g]]$top5_tokens[m]))) == "yes"){
@@ -459,20 +422,26 @@ causal_direction <- function(topic,
     for (w in row_index) {
       var1_prob_t <- 0
       var2_prob_t <- 0
+      n_ok1 <- 0 # number of prompts that returned logprobs (failed calls are left out of the average)
+      n_ok2 <- 0
       for (z in 1:2) {
-        for (x in 1:nrow(all_prob_var1[[w]][[z]])) {
+        n_ok1 <- n_ok1 + (nrow(last_token_f_var1[[w]][[z]]) > 0)
+        n_ok2 <- n_ok2 + (nrow(last_token_f_var2[[w]][[z]]) > 0)
+        for (x in seq_len(nrow(all_prob_var1[[w]][[z]]))) {
           if (all_prob_var1[[w]][[z]]$Class[[x]] == var_1[w]) {
             var1_prob_t <- var1_prob_t + as.numeric(all_prob_var1[[w]][[z]]$Probability[[x]])
           }
         }
-        for (j in 1:nrow(all_prob_var2[[w]][[z]])) {
+        for (j in seq_len(nrow(all_prob_var2[[w]][[z]]))) {
           if (all_prob_var2[[w]][[z]]$Class[[j]] == var_2[w]) {
             var2_prob_t <- var2_prob_t + as.numeric(all_prob_var2[[w]][[z]]$Probability[[j]])
           }
         }
       }
-      var1_prob_f[w] <- ifelse((var1_prob_t / 2) > 100, round((var1_prob_t / 2)), round((var1_prob_t / 2), 2))
-      var2_prob_f[w] <- ifelse((var2_prob_t / 2) > 100, round((var2_prob_t / 2)), round((var2_prob_t / 2), 2))
+      var1_prob_t <- var1_prob_t / max(n_ok1, 1)
+      var2_prob_t <- var2_prob_t / max(n_ok2, 1)
+      var1_prob_f[w] <- ifelse(var1_prob_t > 100, round(var1_prob_t), round(var1_prob_t, 2))
+      var2_prob_f[w] <- ifelse(var2_prob_t > 100, round(var2_prob_t), round(var2_prob_t, 2))
     }
 
     #replace absent relations with 0
@@ -508,80 +477,37 @@ causal_direction <- function(topic,
 
   # Add raw_LLM to output
   tryCatch({
-    # Initialize two empty dataframes for var1 and var2
-    flattened_df_var1 <- data.frame(var = character(),
-                                    relationship = integer(),
-                                    iteration = integer(),
-                                    LLM_model = character(),
-                                    prompt = character(),
-                                    system_prompt = character(),
-                                    content = character(),
-                                    finish_reason = character(),
-                                    prompt_tokens = numeric(),
-                                    answer_tokens = numeric(),
-                                    total_tokens = numeric(),
-                                    error = character(),
-                                    stringsAsFactors = FALSE)
+    # Build one row of raw LLM output (missing fields after an error become NA)
+    raw_row <- function(r, var, rel, it) {
+      data.frame(var = var,
+                 relationship = rel,
+                 iteration = it,
+                 LLM_model = .val(r$LLM_model),
+                 prompt = .val(r$prompt),
+                 system_prompt = .val(r$system_prompt),
+                 content = .val(r$content),
+                 finish_reason = .val(r$finish_reason),
+                 prompt_tokens = .val(r$prompt_tokens),
+                 answer_tokens = .val(r$answer_tokens),
+                 total_tokens = .val(r$total_tokens),
+                 error = if (is.null(r$error)) NA else as.character(unlist(r$error)[1]),
+                 stringsAsFactors = FALSE)
+    }
 
-    flattened_df_var2 <- data.frame(var = character(),
-                                    relationship = integer(),
-                                    iteration = integer(),
-                                    LLM_model = character(),
-                                    prompt = character(),
-                                    system_prompt = character(),
-                                    content = character(),
-                                    finish_reason = character(),
-                                    prompt_tokens = numeric(),
-                                    answer_tokens = numeric(),
-                                    total_tokens = numeric(),
-                                    error = character(),
-                                    stringsAsFactors = FALSE)
-
-    # Flatten var1
+    raw_rows <- list()
     for (i in seq_along(raw_LLM_var1)) {
       for (j in seq_along(raw_LLM_var1[[i]])) {
-        temp <- raw_LLM_var1[[i]][[j]]
-        flattened_df_var1 <- rbind(flattened_df_var1,
-                                   data.frame(var = "var1",
-                                              relationship = i,
-                                              iteration = j,
-                                              LLM_model = temp$LLM_model,
-                                              prompt = temp$prompt,
-                                              system_prompt = temp$system_prompt,
-                                              content = temp$content,
-                                              finish_reason = temp$finish_reason,
-                                              prompt_tokens = temp$prompt_tokens,
-                                              answer_tokens = temp$answer_tokens,
-                                              total_tokens = temp$total_tokens,
-                                              error = ifelse(is.null(temp$error), NA, temp$error),
-                                              stringsAsFactors = FALSE))
+        raw_rows[[length(raw_rows) + 1]] <- raw_row(raw_LLM_var1[[i]][[j]], "var1", i, j)
       }
     }
-
-    # Flatten var2
     for (i in seq_along(raw_LLM_var2)) {
       for (j in seq_along(raw_LLM_var2[[i]])) {
-        temp <- raw_LLM_var2[[i]][[j]]
-        flattened_df_var2 <- rbind(flattened_df_var2,
-                                   data.frame(var = "var2",
-                                              relationship = i,
-                                              iteration = j,
-                                              LLM_model = temp$LLM_model,
-                                              prompt = temp$prompt,
-                                              system_prompt = temp$system_prompt,
-                                              content = temp$content,
-                                              finish_reason = temp$finish_reason,
-                                              prompt_tokens = temp$prompt_tokens,
-                                              answer_tokens = temp$answer_tokens,
-                                              total_tokens = temp$total_tokens,
-                                              error = ifelse(is.null(temp$error), NA, temp$error),
-                                              stringsAsFactors = FALSE))
+        raw_rows[[length(raw_rows) + 1]] <- raw_row(raw_LLM_var2[[i]][[j]], "var2", i, j)
       }
     }
 
-    # Combine the two dataframes
-    raw_LLM_df <- rbind(flattened_df_var1, flattened_df_var2)
-    output$raw_LLM <- raw_LLM_df
+    # Combine all rows
+    output$raw_LLM <- do.call(rbind, raw_rows)
 
   }, error = function(e) {
     cat(paste0("Warning: Unable to return raw LLM output -> ", e$message, "."),
@@ -595,19 +521,13 @@ causal_direction <- function(topic,
 
   message(sprintf("Total of LLM prompts: %d", n_causal_rela * 4))
 
-  # give openai error if there is no output at all
-  if (length(output) == 0) {
-    for (i in row_index) {
-      if (!is.null(raw_LLM_var1[[i]][[1]]$error$message)) {
-        stop(raw_LLM_var1[[i]][[1]]$error$message)
-      } else if (!is.null(raw_LLM_var1[[i]][[2]]$error$message)) {
-        stop(raw_LLM_var1[[i]][[2]]$error$message)
-      } else if (!is.null(raw_LLM_var2[[i]][[1]]$error$message)) {
-        stop(raw_LLM_var2[[i]][[1]]$error$message)
-      } else if (!is.null(raw_LLM_var2[[i]][[2]]$error$message)) {
-        stop(raw_LLM_var2[[i]][[2]]$error$message)
-      }
-    }
+  # API errors: stop if all LLM calls failed (or nothing could be calculated), warn if some failed
+  errs <- unlist(lapply(c(raw_LLM_var1, raw_LLM_var2), function(p) lapply(p, function(r) r$error$message)))
+  if (length(errs) > 0 && (is.null(output$direction_df) || length(errs) == n_causal_rela * 4)) {
+    stop(errs[1], call. = FALSE)
+  } else if (length(errs) > 0) {
+    warning(sprintf("%d of %d LLM calls failed (first error: %s). These calls are left out of the average (a pair for which all calls failed gets 0); see the 'error' column in 'raw_LLM'.",
+                    length(errs), n_causal_rela * 4, errs[1]), call. = FALSE)
   }
 
   return(output)

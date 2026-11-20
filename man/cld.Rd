@@ -17,17 +17,18 @@ cld(topic,
 
 \item{variable_list}{A vector containing all variables that need to be included in the CLD.}
 
-\item{plot}{If \code{plot = TRUE} (default), the function will generate network plot(s) visualizing the edge list(s).}
+\item{plot}{If \code{plot = TRUE} (default), the function will generate a network plot visualizing the edge list. If \code{plot = FALSE}, the edge list is still returned but not plotted.}
 
-\item{LLM_model}{The LLM model that should be used to generate output: \code{"gpt-4o"} (default), \code{"gpt-4"}, \code{"gpt-4-turbo"} \code{"gpt-3.5-turbo"}, \code{"llama-3"} (specifically points to Llama-3-70B-Chat-hf, accessed via Hugging Face), or \code{"mixtral"} (specifically points to Mixtral-8x7B-Instruct-v0.1, accessed via Together.ai).}
+\item{LLM_model}{The LLM that should be used to generate output. Either one of the built-in OpenAI models (\code{"gpt-4o"} (default), \code{"gpt-4"}, \code{"gpt-4-turbo"}, \code{"gpt-3.5-turbo"}), or any model from a supported provider written as \code{"<provider>/<model name>"} (providers: \code{openai}, \code{deepseek}, \code{together}, \code{huggingface}; e.g., \code{"huggingface/meta-llama/Llama-3.3-70B-Instruct"} or \code{"huggingface/moonshotai/Kimi-K2.6"}). The model must return log probabilities; use \code{\link{check_llm}()} to check whether a model can be used.}
 
-\item{max_tokens}{The maximum number of tokens the LLM should generate. Be careful when adjusting this argument. Reducing the maximum token limit will reduce the cost but may result in incomplete answers. Conversely, increasing the token limit can be advantageous for obtaining more detailed responses. The maximum number of tokens depends on the model (\code{6000} for \code{"gpt-4o"}, \code{"gpt-4"}, and \code{"gpt-4-turbo"}, \code{3000} for \code{"gpt-3.5-turbo"}, and \code{2000} for \code{"mixtral"}).}
+\item{max_tokens}{The maximum number of tokens the LLM should generate. Be careful when adjusting this argument. Reducing the maximum token limit will reduce the cost but may result in incomplete answers. Conversely, increasing the token limit can be advantageous for obtaining more detailed responses. For the built-in models, the maximum is \code{6000} for \code{"gpt-4o"}, \code{"gpt-4"} and \code{"gpt-4-turbo"}, and \code{3000} for \code{"gpt-3.5-turbo"}. For other models, any whole number above 0 is accepted; check the limit of the model you use.}
 
 \item{update_key}{If \code{update_key = TRUE}, the function will prompt the user for a new API key and update the saved key. If \code{update_key = FALSE} (default), the function will use the existing API key if available.}
 
 \item{custom_llm_fn}{Optionally, a custom function to use instead of the built-in LLM models. If provided, the \code{LLM_model}, \code{max_tokens}, and \code{update_key} arguments are ignored; handle those inside your custom function. The function must accept \code{prompt} and \code{system_prompt} as arguments and return a list with at minimum \code{$output} (the response text as a character string), and optionally \code{$top5_tokens} for functions that calculate probabilities from logprobs (namely the \code{\link{causal_relation}}, \code{\link{causal_direction}}, and \code{\link{causal_sign}} functions). \code{$top5_tokens} must be a list of dataframes, one per output token, each with columns \code{top5_tokens} (character), \code{logprob} (numeric), and \code{probability} (numeric).}
 }
 \value{
+If no variable pair has a probability of a causal relationship above 50\%, the function stops after \code{\link{causal_relation}} and returns \code{raw_LLM} and \code{relation_df}. If no causal direction has a probability above 50\%, it stops after \code{\link{causal_direction}} and returns \code{raw_LLM} and \code{direction_df}. Otherwise, the output is:
 \itemize{
   \item \code{raw_LLM}: A dataframe containing the unprocessed LLM output along with some other LLM information, including:
     \itemize{
@@ -56,25 +57,18 @@ cld(topic,
       \item \code{prob_var1_pos}: Probability of a positive relationship where var1 is the cause.
       \item \code{prob_var1_neg}: Probability of a negative relationship where var1 is the cause.
       \item \code{prob_var2_cause}: Probability of var2 being a cause variable.
-      \item \code{prob_var2_pos}: Probability of a positive relationship where var1 is the cause.
-      \item \code{prob_var2_neg}: Probability of a negative relationship where var1 is the cause.
+      \item \code{prob_var2_pos}: Probability of a positive relationship where var2 is the cause.
+      \item \code{prob_var2_neg}: Probability of a negative relationship where var2 is the cause.
     }
 } \cr
 \itemize{
-  \item
-A plot and an edge list.
-An edge list is a list containing all the edges between nodes. These nodes symbolise variables, while the edges denote the causal relationships that link these variables.
-
-The specific outputted edge list is \code{dir_signs_edge_list}.
-This is an edge list for a direction probability dataframe with sign indication (for more information about different edge lists see \code{\link{cld_plot}}).
-\cr
-\cr
-\code{edge_list}: An edge list with 4 columns:
-\itemize{
+  \item \code{edge_list}: The \code{sign_edge_list} created by \code{\link{cld_plot}} (for more information about edge lists see \code{\link{cld_plot}}). An edge list with 5 columns:
+    \itemize{
       \item \code{from}: Cause variable.
       \item \code{to}: Dependent variable.
-      \item \code{weight}: Probability of a causal relationship between the Cause and Dependent variable.
+      \item \code{weight}: The combined probability (the probability of a causal relationship multiplied by the direction probability).
       \item \code{sign}: Sign of the causal relationship (can be either "Positive", "Negative", or "Uncertain").
+      \item \code{color}: Color of the edge in the plot (blue for positive, red for negative, black for uncertain).
     }
 }
 }
@@ -113,7 +107,7 @@ cld_example$edge_list
 }
 \seealso{
 \code{\link{var_list}},
-\code{\link{causal_relation}},,
+\code{\link{causal_relation}},
 \code{\link{causal_direction}},
 \code{\link{causal_sign}},
 \code{\link{cld_plot}},

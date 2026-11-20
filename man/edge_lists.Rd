@@ -20,23 +20,16 @@ A list containing the following components:
     \itemize{
       \item \code{from}: The "from" node, otherwise known as the "cause" variable.
       \item \code{to}: The "to" node, otherwise known as the "dependent" variable.
-      \item \code{weight}: The weights associated with the causal relationship. In this case, the weights refer to the probability of there being a causal relationship.
+      \item \code{weight}: The combined probability (the probability of a causal relationship multiplied by the direction probability).
     }} \cr
-  \item \code{rel_sign_edge_list}: Edge list for a relation probability dataframe with sign indication (relation \code{sign_df}) input.
+  \item \code{sign_edge_list}: Edge list for a sign probability dataframe (\code{sign_df}) input.
     \describe{
     \itemize{
       \item \code{from}: The "from" node, otherwise known as the "cause" variable.
       \item \code{to}: The "to" node, otherwise known as the "dependent" variable.
-      \item \code{weight}: The weights associated with the causal relationship. In this case, the weights refer to the probability of there being a causal relationship.
+      \item \code{weight}: The combined probability (the probability of a causal relationship multiplied by the direction probability).
       \item \code{sign}: The sign of the causal relationship (can be either "Positive", "Negative", or "Uncertain").
-    }} \cr
-  \item \code{dir_sign_edge_list}: Edge list for a direction probability dataframe with sign indication (direction \code{sign_df}) input.
-    \describe{
-    \itemize{
-      \item \code{from}: The "from" node, otherwise known as the "cause" variable.
-      \item \code{to}: The "to" node, otherwise known as the "dependent" variable.
-      \item \code{weight}: The weights associated with the causal relationship. In this case, the weights refer to the probability of there being a causal relationship.
-      \item \code{sign}: The sign of the causal relationship (can be either "Positive", "Negative", or "Uncertain").
+      \item \code{color}: Color of the edge in the plot (blue for positive, red for negative, black for uncertain).
     }}
 }
 }
@@ -48,7 +41,7 @@ Generated using the OpenAI platform: \url{https://platform.openai.com}
 edge_lists
 }
 \description{
-This data set contains a list of 4 edge lists related to the topic of addiction.
+This data set contains a list of 3 edge lists related to the topic of addiction.
 The data was generated using the \code{\link{cld_plot}} function and the "gpt-4o" Large Language Model (LLM).
 }
 \examples{

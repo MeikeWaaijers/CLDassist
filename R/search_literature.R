@@ -41,12 +41,12 @@
 #' \code{\link{var_list}} --> \code{\link{causal_relation}} --> \code{\link{causal_direction}} --> \code{\link{causal_sign}} --> \code{\link{cld_plot}} --> \code{\link{search_literature}}
 #'
 #' @param topic A character vector specifying the topic for which a CLD should be developed. If it is not feasible to identify a particular topic, the argument can be set to NULL.
-#' @param edge_list A data frame representing a causal edge list, with one row per putative causal relationship. Must contain at least two columns: \code{from}, a character column naming the cause variable; and \code{to}, a character column naming the dependent variable. The edge list may contain additional columns (e.g., \code{weight}, \code{sign}) produced by other \code{CLDassist} functions; these are accepted but not used by \code{search_literature()}.
+#' @param edge_list A data frame representing a causal edge list, with one row per putative causal relationship. Must contain at least two columns: \code{from}, a character column naming the cause variable; and \code{to}, a character column naming the dependent variable. The edge list may contain additional columns (e.g., \code{weight}, \code{sign}) produced by other \code{CLDassist} functions; these are accepted but not used by \code{search_literature()}. By default, all edges are searched, including those below the thresholds, so that rejected relationships can also be checked; to search only the plotted edges, filter the edge list first (e.g. \code{edge_list[edge_list$weight > 50, ]}).
 #' @param scientific If \code{scientific = TRUE } (default), the LLM is asked to search scientific literature. If \code{FALSE}, any credible source is allowed.
 #' @param LLM_model The LLM model that should be used to generate output. As of now, only \code{"gpt-4.1"} is available for this function. Other models may be added in future updates.
 #' @param max_tokens The maximum number of tokens the LLM should generate. Be careful when adjusting this argument. Reducing the maximum token limit will reduce the cost but may result in incomplete answers. Conversely, increasing the token limit can be advantageous for obtaining more detailed responses. The maximum number of tokens depends on the model. As of now, only \code{"gpt-4.1"} is supported for this function, with a maximum token limit of \code{6000}.
 #' @inheritParams var_list
-#' @param custom_llm_fn Optionally, a custom function to use instead of the built-in LLM models. If provided, the \code{LLM_model}, \code{max_tokens}, and \code{update_key} arguments are ignored; handle those inside your custom function. The function must accept \code{prompt} as an argument and return a list with at minimum \code{$output} (the response text as a character string), and \code{$sources} (a character vector of citation URLs found by the model). Since the purpose of this function is to look for literature, your custom function should use an LLM with web search or browsing capabilities so that \code{$sources} can be populated. If \code{$sources} is omitted or \code{NULL}, the \code{url} column in the output will be \code{NA}.
+#' @param custom_llm_fn Optionally, a custom function to use instead of the built-in LLM models. If provided, the \code{LLM_model}, \code{max_tokens}, and \code{update_key} arguments are ignored; handle those inside your custom function. The function must accept the arguments \code{prompt} and \code{system_prompt}, and return a list with at minimum \code{$output} (the response text as a character string), and \code{$sources} (a character vector of citation URLs found by the model). Since the purpose of this function is to look for literature, your custom function should use an LLM with web search or browsing capabilities so that \code{$sources} can be populated. If \code{$sources} is omitted or \code{NULL}, the \code{url} column in the output will be \code{NA}.
 #'
 #'
 #' @returns
@@ -91,8 +91,8 @@
 #' ## Example input (topic = "addiction")
 #' data("edge_lists")
 #'
-#' # Use the direction + sign edge list (columns: from, to, weight, sign)
-#' input <- edge_lists$dir_sign_edge_list
+#' # Use the sign edge list (columns: from, to, weight, sign, color)
+#' input <- edge_lists$sign_edge_list
 #'
 #' #---------------------------------------------------------------------------
 #' ## Default
@@ -231,9 +231,9 @@ search_literature <- function(topic,
 
       }, error = function(e) {
         message(sprintf("Error at edge %d, order %d (%s -> %s): %s", j, o, var_1, var_2, e$message))
-        runs[[idx]] <- NA
-        all_literature[idx] <- list(NULL)
-        raw_LLM[[idx]] <- list(prompt = prompt, error = e$message)
+        runs[[idx]] <<- NA
+        all_literature[idx] <<- list(NULL)
+        raw_LLM[[idx]] <<- list(prompt = prompt, error = e$message)
 
         edge_explanations[[o]] <<- NA
         edge_literature[[o]] <<- NULL
@@ -252,12 +252,13 @@ search_literature <- function(topic,
       text <- gsub('\\(\\[[^\\]]+\\]\\((.*?)\\)\\)', '(\\1)', text, perl = TRUE)
       text <- gsub('\\[[^\\]]+\\]\\((.*?)\\)', '(\\1)', text, perl = TRUE)
       text <- gsub('[[:space:]]+', ' ', text)
+      text <- gsub("[?&]utm_source=openai", "", text) # remove OpenAI tracking from links
       text <- trimws(text)
       text <- gsub('"', "'", text)
       explanation[[k]] <- text
     }, error = function(e) {
       message(sprintf("Cleaning error at index %d: %s", k, e$message))
-      explanation[[k]] <- NA
+      explanation[[k]] <<- NA
     })
   }
 
@@ -285,7 +286,7 @@ search_literature <- function(topic,
     combined_lit <- unique(combined_lit)
     combined_literature[j] <- if (length(combined_lit) == 0) NA_character_ else paste(combined_lit, collapse = "; ")
   }
-
+  combined_literature <- gsub("[?&]utm_source=openai", "", combined_literature)
   edge_list_out$url <- combined_literature
   edge_list_out$explanation <- combined_explanation
 
@@ -310,14 +311,14 @@ search_literature <- function(topic,
 
       flattened_df_raw_LLM <- rbind(flattened_df_raw_LLM,
                                     data.frame(relationship = relationship_id,
-                                               LLM_model = temp$LLM_model,
-                                               prompt = temp$prompt,
-                                               content = temp$content,
-                                               finish_reason = temp$finish_reason,
-                                               prompt_tokens = temp$prompt_tokens,
-                                               answer_tokens = temp$answer_tokens,
-                                               total_tokens = temp$total_tokens,
-                                               error = ifelse(is.null(temp$error), NA, temp$error),
+                                               LLM_model = .val(temp$LLM_model),
+                                               prompt = .val(temp$prompt),
+                                               content = .val(temp$content),
+                                               finish_reason = .val(temp$finish_reason),
+                                               prompt_tokens = .val(temp$prompt_tokens),
+                                               answer_tokens = .val(temp$answer_tokens),
+                                               total_tokens = .val(temp$total_tokens),
+                                               error = if (is.null(temp$error)) NA else as.character(unlist(temp$error)[1]),
                                                stringsAsFactors = FALSE))
     }
 
@@ -329,8 +330,9 @@ search_literature <- function(topic,
   # Final check
   if (all(is.na(unlist(explanation)))) {
     for (i in seq_along(raw_LLM)) {
-      err <- try(raw_LLM[[i]]$error$message, silent = TRUE)
-      if (!inherits(err, "try-error") && !is.null(err)) stop(err)
+      err <- raw_LLM[[i]]$error
+      if (is.list(err)) err <- err$message
+      if (is.character(err) && length(err) == 1 && nzchar(err)) stop(err)
     }
     stop("LLM failed to produce any usable output, and no error message was found.")
   }

@@ -17,10 +17,10 @@
 
 
 #### CLDassist
-### dir_sign data set
+### sign data set
 
 
-#' dir_sign data
+#' sign data
 #'
 #' This data set contains the probabilities of the presence, the direction and the sign of
 #' causal relationships between various variables related to the topic of addiction.
@@ -45,7 +45,7 @@
 #'         \item \code{total_tokens}: Total number of tokens used.
 #'         \item \code{error}: Error message, if any occurred.
 #'      }} \cr
-#'     \item \code{sign_df}: A dataframe with nine columns representing the probability of the presence, the direction, and the sign of causal relationships between various variable.
+#'     \item \code{sign_df}: A dataframe with nine columns representing the probability of the presence, the direction, and the sign of causal relationships between various variables.
 #'       \describe{
 #'       \itemize{
 #'         \item \code{var1}: Variable 1 of a unique variable pair.
@@ -64,5 +64,5 @@
 #' @source Generated using the OpenAI platform: \url{https://platform.openai.com}
 #'
 #' @examples
-#' data("dir_sign")
-"dir_sign"
+#' data("sign")
+"sign"

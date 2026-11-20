@@ -1,0 +1,242 @@
+http_interactions:
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d798fc79e8fe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:53:27 GMT
+      openai-processing-ms: '379'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      vary: Origin
+      x-content-type-options: nosniff
+      x-openai-proxy-wasm: v0.1
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999671'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_35c9458df47843afa205ac10526fd291
+    body:
+      string: |
+        {
+          "id": "chatcmpl-EmIPHsPy7VBeHeL89RG3yfP45EoRB",
+          "object": "chat.completion",
+          "created": 1795179207,
+          "model": "gpt-4o-2024-08-06",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "C",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": {
+                "content": [
+                  {
+                    "token": "C",
+                    "logprob": -0.001354217529296875,
+                    "bytes": [
+                      67
+                    ],
+                    "top_logprobs": [
+                      {
+                        "token": "C",
+                        "logprob": -0.001354217529296875,
+                        "bytes": [
+                          67
+                        ]
+                      },
+                      {
+                        "token": "N",
+                        "logprob": -6.610729217529297,
+                        "bytes": [
+                          78
+                        ]
+                      },
+                      {
+                        "token": "'C",
+                        "logprob": -12.141979217529297,
+                        "bytes": [
+                          39,
+                          67
+                        ]
+                      },
+                      {
+                        "token": " C",
+                        "logprob": -14.454479217529297,
+                        "bytes": [
+                          32,
+                          67
+                        ]
+                      },
+                      {
+                        "token": "'N",
+                        "logprob": -15.532604217529297,
+                        "bytes": [
+                          39,
+                          78
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "refusal": null
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 294,
+            "completion_tokens": 1,
+            "total_tokens": 295,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_4c910a9acf"
+        }
+  recorded_at: 2026-11-20 12:53:27
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/chat/completions
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d7990008c9fe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:53:28 GMT
+      openai-processing-ms: '381'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      vary: Origin
+      x-content-type-options: nosniff
+      x-openai-proxy-wasm: v0.1
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999671'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_d22ca07a7ef44cef81ecc61c8287cd49
+    body:
+      string: |
+        {
+          "id": "chatcmpl-EmIPI2QusZmObj4afUwFRiGp6CWGQ",
+          "object": "chat.completion",
+          "created": 1795179208,
+          "model": "gpt-4o-2024-08-06",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "C",
+                "refusal": null,
+                "annotations": []
+              },
+              "logprobs": {
+                "content": [
+                  {
+                    "token": "C",
+                    "logprob": -0.00002288818359375,
+                    "bytes": [
+                      67
+                    ],
+                    "top_logprobs": [
+                      {
+                        "token": "C",
+                        "logprob": -0.00002288818359375,
+                        "bytes": [
+                          67
+                        ]
+                      },
+                      {
+                        "token": "N",
+                        "logprob": -10.859397888183594,
+                        "bytes": [
+                          78
+                        ]
+                      },
+                      {
+                        "token": "'C",
+                        "logprob": -13.359397888183594,
+                        "bytes": [
+                          39,
+                          67
+                        ]
+                      },
+                      {
+                        "token": " C",
+                        "logprob": -14.906272888183594,
+                        "bytes": [
+                          32,
+                          67
+                        ]
+                      },
+                      {
+                        "token": "*C",
+                        "logprob": -17.515647888183594,
+                        "bytes": [
+                          42,
+                          67
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "refusal": null
+              },
+              "finish_reason": "stop"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 294,
+            "completion_tokens": 1,
+            "total_tokens": 295,
+            "prompt_tokens_details": {
+              "cached_tokens": 0,
+              "audio_tokens": 0
+            },
+            "completion_tokens_details": {
+              "reasoning_tokens": 0,
+              "audio_tokens": 0,
+              "accepted_prediction_tokens": 0,
+              "rejected_prediction_tokens": 0
+            }
+          },
+          "service_tier": "default",
+          "system_fingerprint": "fp_4c910a9acf"
+        }
+  recorded_at: 2026-11-20 12:53:28
+recorded_with: VCR-vcr/2.1.0

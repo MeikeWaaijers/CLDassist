@@ -3,6 +3,7 @@
 export(causal_direction)
 export(causal_relation)
 export(causal_sign)
+export(check_llm)
 export(cld)
 export(cld_plot)
 export(search_literature)

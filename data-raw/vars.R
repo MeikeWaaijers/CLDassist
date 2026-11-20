@@ -1,4 +1,4 @@
-vars <- var_list(topic = "Addiction",
+vars <- var_list(topic = "addiction",
                  include_topic = FALSE,
                  n_final = 10,
                  n_variables = "all",

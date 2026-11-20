@@ -15,7 +15,7 @@ search_literature(topic,
 \arguments{
 \item{topic}{A character vector specifying the topic for which a CLD should be developed. If it is not feasible to identify a particular topic, the argument can be set to NULL.}
 
-\item{edge_list}{A data frame representing a causal edge list, with one row per putative causal relationship. Must contain at least two columns: \code{from}, a character column naming the cause variable; and \code{to}, a character column naming the dependent variable. The edge list may contain additional columns (e.g., \code{weight}, \code{sign}) produced by other \code{CLDassist} functions; these are accepted but not used by \code{search_literature()}.}
+\item{edge_list}{A data frame representing a causal edge list, with one row per putative causal relationship. Must contain at least two columns: \code{from}, a character column naming the cause variable; and \code{to}, a character column naming the dependent variable. The edge list may contain additional columns (e.g., \code{weight}, \code{sign}) produced by other \code{CLDassist} functions; these are accepted but not used by \code{search_literature()}. By default, all edges are searched, including those below the thresholds, so that rejected relationships can also be checked; to search only the plotted edges, filter the edge list first (e.g. \code{edge_list[edge_list$weight > 50, ]}).}
 
 \item{scientific}{If \code{scientific = TRUE } (default), the LLM is asked to search scientific literature. If \code{FALSE}, any credible source is allowed.}
 
@@ -25,7 +25,7 @@ search_literature(topic,
 
 \item{update_key}{If \code{update_key = TRUE}, the function will prompt the user for a new API key and update the saved key. If \code{update_key = FALSE} (default), the function will use the existing API key if available.}
 
-\item{custom_llm_fn}{Optionally, a custom function to use instead of the built-in LLM models. If provided, the \code{LLM_model}, \code{max_tokens}, and \code{update_key} arguments are ignored; handle those inside your custom function. The function must accept \code{prompt} as an argument and return a list with at minimum \code{$output} (the response text as a character string), and \code{$sources} (a character vector of citation URLs found by the model). Since the purpose of this function is to look for literature, your custom function should use an LLM with web search or browsing capabilities so that \code{$sources} can be populated. If \code{$sources} is omitted or \code{NULL}, the \code{url} column in the output will be \code{NA}.}
+\item{custom_llm_fn}{Optionally, a custom function to use instead of the built-in LLM models. If provided, the \code{LLM_model}, \code{max_tokens}, and \code{update_key} arguments are ignored; handle those inside your custom function. The function must accept the arguments \code{prompt} and \code{system_prompt}, and return a list with at minimum \code{$output} (the response text as a character string), and \code{$sources} (a character vector of citation URLs found by the model). Since the purpose of this function is to look for literature, your custom function should use an LLM with web search or browsing capabilities so that \code{$sources} can be populated. If \code{$sources} is omitted or \code{NULL}, the \code{url} column in the output will be \code{NA}.}
 }
 \value{
 \itemize{
@@ -66,8 +66,8 @@ The function and its output should be approached with caution. Depending on the 
 ## Example input (topic = "addiction")
 data("edge_lists")
 
-# Use the direction + sign edge list (columns: from, to, weight, sign)
-input <- edge_lists$dir_sign_edge_list
+# Use the sign edge list (columns: from, to, weight, sign, color)
+input <- edge_lists$sign_edge_list
 
 #---------------------------------------------------------------------------
 ## Default

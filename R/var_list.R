@@ -27,7 +27,7 @@
 #' In \code{var_list()} a Large Language Model (LLM) is instructed to generate a list of important variables for a particular topic.
 #'
 #' The function prompts a LLM to compile two lists of variables with 2 different prompts.
-#' The LLM is instructed to include only variables that are precisely defined and measured on a binary or continuous scale.
+#' The LLM is instructed to include only variables that can increase or decrease, are well-defined and measurable, do not overlap, and are neutrally worded.
 #' The LLM then merges the two lists, removing duplicates and synonyms, and reviews the combined list to identify any missing crucial variables.
 #' Finally, it refines the list by separating combined factors into distinct items.
 #'
@@ -48,12 +48,12 @@
 #'
 #' \code{\link{var_list}} --> \code{\link{causal_relation}} --> \code{\link{causal_direction}} --> \code{\link{causal_sign}} --> \code{\link{cld_plot}} --> \code{\link{search_literature}}
 #'
-#' @param topic A character vector specifying the topic for which a CLD should be developed. If it is not feasible to identify a particular topic, the argument can be set to NULL.
-#' @param include_topic If \code{include_topic = FALSE} (default), the topic specified in the \code{"topic"} argument will not be included as a seperate variable in the variable list.
+#' @param topic A character string specifying the topic for which a CLD should be developed.
+#' @param include_topic If \code{include_topic = FALSE} (default), the topic specified in the \code{"topic"} argument will not be included as a separate variable in the variable list.
 #' @param n_variables Number of variables the LLM should generate in the first 2 variable lists. If \code{"all"} (default), the LLM is not limited to generate a specific number of variables, but is asked to create a list of "all" important variables.
-#' @param n_final Number of variables to be included in the final variable list. If \code{inf} (default), the final integrated variable list will not be limited to a certain number of variables.
-#' @param LLM_model The LLM model that should be used to generate output: \code{"gpt-4o"} (default), \code{"gpt-4"}, \code{"gpt-4-turbo"} \code{"gpt-3.5-turbo"}, \code{"llama-3"} (specifically points to Llama-3-70B-Chat-hf, accessed via Hugging Face), or \code{"mixtral"} (specifically points to Mixtral-8x7B-Instruct-v0.1, accessed via Together.ai).
-#' @param max_tokens The maximum number of tokens the LLM should generate. Be careful when adjusting this argument. Reducing the maximum token limit will reduce the cost but may result in incomplete answers. Conversely, increasing the token limit can be advantageous for obtaining more detailed responses. The maximum number of tokens depends on the model (\code{6000} for \code{"gpt-4o"}, \code{"gpt-4"}, and \code{"gpt-4-turbo"}, \code{3000} for \code{"gpt-3.5-turbo"}, and \code{2000} for \code{"mixtral"}).
+#' @param n_final Number of variables to be included in the final variable list. If \code{Inf} (default), the final integrated variable list will not be limited to a certain number of variables.
+#' @param LLM_model The LLM that should be used to generate output. Either one of the built-in OpenAI models (\code{"gpt-4o"} (default), \code{"gpt-4"}, \code{"gpt-4-turbo"}, \code{"gpt-3.5-turbo"}), or any model from a supported provider written as \code{"<provider>/<model name>"} (providers: \code{openai}, \code{deepseek}, \code{together}, \code{huggingface}; e.g., \code{"huggingface/meta-llama/Llama-3.3-70B-Instruct"} or \code{"huggingface/moonshotai/Kimi-K2.6"}). The model must return log probabilities; use \code{\link{check_llm}()} to check whether a model can be used.
+#' @param max_tokens The maximum number of tokens the LLM should generate. Be careful when adjusting this argument. Reducing the maximum token limit will reduce the cost but may result in incomplete answers. Conversely, increasing the token limit can be advantageous for obtaining more detailed responses. For the built-in models, the maximum is \code{6000} for \code{"gpt-4o"}, \code{"gpt-4"} and \code{"gpt-4-turbo"}, and \code{3000} for \code{"gpt-3.5-turbo"}. For other models, any whole number above 0 is accepted; check the limit of the model you use.
 #' @param update_key If \code{update_key = TRUE}, the function will prompt the user for a new API key and update the saved key. If \code{update_key = FALSE} (default), the function will use the existing API key if available.
 #' @param custom_llm_fn Optionally, a custom function to use instead of the built-in LLM models. If provided, the \code{LLM_model}, \code{max_tokens}, and \code{update_key} arguments are ignored; handle those inside your custom function. The function must accept \code{prompt} and \code{system_prompt} as arguments and return a list with at minimum \code{$output} (the response text as a character string), and optionally \code{$top5_tokens} for functions that calculate probabilities from logprobs (namely the \code{\link{causal_relation}}, \code{\link{causal_direction}}, and \code{\link{causal_sign}} functions). \code{$top5_tokens} must be a list of dataframes, one per output token, each with columns \code{top5_tokens} (character), \code{logprob} (numeric), and \code{probability} (numeric).
 #'
@@ -74,7 +74,7 @@
 #'       \item \code{error}: Error message, if any occurred.
 #'     } \cr
 #'   \item \code{all_vars}: A vector containing the integrated variable list with every variable generated by the LLM.
-#'   \item \code{final_list}: A vector containing the final variable list. If the n_final argument is set in Inf or a number higher than the number or variables in all_vars the final list will be exactly the same as all_vars.
+#'   \item \code{final_list}: A vector containing the final variable list. If the \code{n_final} argument is set to \code{Inf} or to a number higher than the number of variables in \code{all_vars}, the final list will be exactly the same as \code{all_vars}.
 #' }
 #'
 #' @references \url{https://platform.openai.com}
@@ -123,28 +123,14 @@ var_list <- function(topic,
   #validate input
   stopifnot(
     "'topic' should be a single non-empty character string." =
-      is.null(topic) ||
-      (is.character(topic) && length(topic) == 1L && !is.na(topic) && nzchar(trimws(topic)))
+      is.character(topic) && length(topic) == 1L && !is.na(topic) && nzchar(trimws(topic))
   )
   stopifnot("'include_topic' should be a logical value." = is.logical(include_topic))
   stopifnot("'n_final' should be a whole number above 0." =
-              is.numeric(n_final) && n_final == floor(n_final) && n_final >= 0)
+              is.numeric(n_final) && n_final == floor(n_final) && n_final > 0)
   stopifnot("'n_variables' should be a whole number above 0 or the input should be 'all'." =
-              ((is.numeric(n_variables) && n_variables == floor(n_variables) && n_variables >= 0) || n_variables == "all"))
-  stopifnot("'LLM_model' should be 'gpt-4o', 'gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo', 'mixtral', or 'llama-3'." =
-              !is.null(custom_llm_fn) || LLM_model %in% c("mixtral", "gpt-4o", "gpt-4", "gpt-4-turbo", "gpt-3.5-turbo", "llama-3"))
-  stopifnot("For 'gpt-4o', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-4o") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
-  stopifnot("For 'gpt-4', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-4") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
-  stopifnot("For 'gpt-4-turbo', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-4-turbo") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
-  stopifnot("For 'gpt-3.5-turbo', 'max_tokens' should be a whole number above 0, and not higher than 3000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "gpt-3.5-turbo") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 3000))
-  stopifnot("For 'mixtral', 'max_tokens' should be a whole number above 0, and not higher than 2000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "mixtral") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 2000))
-  stopifnot("For 'llama-3', 'max_tokens' should be a whole number above 0, and not higher than 6000." =
-              !is.null(custom_llm_fn) || !(LLM_model == "llama-3") || (is.numeric(max_tokens) && max_tokens == floor(max_tokens) && max_tokens >= 0 && max_tokens <= 6000))
+              ((is.numeric(n_variables) && n_variables == floor(n_variables) && n_variables > 0) || n_variables == "all"))
+  .validate_llm_args(LLM_model, max_tokens, custom_llm_fn)
   stopifnot("'update_key' should be a logical value." = is.logical(update_key))
 
   if (!is.null(custom_llm_fn)) {
@@ -186,13 +172,21 @@ var_list <- function(topic,
   raw1_LLM <- NULL
   raw2_LLM <- NULL
   raw3_LLM <- NULL
+  raw4_LLM <- NULL
+  raw5_LLM <- NULL
   logprobs1 <- NULL
   logprobs2 <- NULL
   logprobs3 <- NULL
+  logprobs4 <- NULL
+  logprobs5 <- NULL
   raw_LLM <- NULL
   logprobs_out <- NULL
   all_lists_df <- NULL
   variables_f <- NULL
+  variables_ <- NULL
+  extra_vars <- NULL
+  cleaned_vars <- NULL
+  variables <- NULL
 
 
   ## LLM
@@ -214,7 +208,7 @@ var_list <- function(topic,
                          var_prompts$Sys.Prompt[1])
 
   system_prompt2 <- gsub("\\((topic)\\)", topic,
-                         prompts_data$Sys.Prompt[2])
+                         var_prompts$Sys.Prompt[2])
 
   sys_prompt_database <- c(system_prompt1, system_prompt2)
 
@@ -247,8 +241,9 @@ var_list <- function(topic,
     for (k in 1:2){
       split_text[k] <- strsplit(runs[[k]], split = "\n") # Split the string by newline character
     }
-    all_lists <- lapply(split_text, function(x) sub("^\\s*[0-9]+\\.\\s+", "", x))
+    all_lists <- lapply(split_text, function(x) gsub("\\*\\*", "", sub("^\\s*([0-9]+[.)]|[-*])\\s+", "", x)))
     all_lists <- lapply(all_lists, function(x) trimws(x))
+    all_lists <- lapply(all_lists, function(x) x[nzchar(x)]) # remove empty lines
 
     # Get list lengths
     list_length <- NULL
@@ -303,7 +298,7 @@ var_list <- function(topic,
                             update_key = update_key,
                             custom_llm_fn = custom_llm_fn)
 
-    variables_ <- gsub("\n\n", "", integrated$output)  # remove "\n\n"  from LLM output
+    variables_ <- gsub("\n\n", "\n", integrated$output)  # replace empty lines in LLM output
     raw2_LLM <- c(prompt = prompt_int, system_prompt = system_prompt, integrated$raw_content)
     logprobs2 <- integrated$top5_tokens
 
@@ -332,7 +327,7 @@ var_list <- function(topic,
                           update_key = update_key,
                           custom_llm_fn = custom_llm_fn)
 
-    extra_vars <- gsub("\n\n", "", add_vars$output)  # remove "\n\n"  from LLM output
+    extra_vars <- gsub("\n\n", "\n", add_vars$output)  # replace empty lines in LLM output
     raw3_LLM <- c(prompt = prompt_add, system_prompt = system_prompt, add_vars$raw_content)
     logprobs3 <- add_vars$top5_tokens
 
@@ -366,12 +361,12 @@ var_list <- function(topic,
                        update_key = update_key,
                        custom_llm_fn = custom_llm_fn)
 
-    cleaned_vars <- gsub("\n\n", "", clean$output)  # remove "\n\n"  from LLM output
+    cleaned_vars <- gsub("\n\n", "\n", clean$output)  # replace empty lines in LLM output
     raw4_LLM <- c(prompt = prompt_clean, system_prompt = system_prompt, clean$raw_content)
     logprobs4 <- clean$top5_tokens
 
   }, error = function(e){
-    cat(paste0("Warning: List integration not possible -> ", e$message, "."),
+    cat(paste0("Warning: Cleaning up the list not possible -> ", e$message, "."),
         "Only part of the output is returned.", sep = "\n")
   })
 
@@ -380,8 +375,9 @@ var_list <- function(topic,
 
     #Clean the output text
     split_text <- strsplit(cleaned_vars, split = "\n") # Split the string by newline character
-    variables <- lapply(split_text, function(x) sub("^\\s*[0-9]+\\.\\s+", "", x))
+    variables <- lapply(split_text, function(x) gsub("\\*\\*", "", sub("^\\s*([0-9]+[.)]|[-*])\\s+", "", x)))
     variables <- lapply(variables, function(x) trimws(x))
+    variables <- lapply(variables, function(x) x[nzchar(x)]) # remove empty lines
 
 
   }, error = function(e) {
@@ -415,7 +411,7 @@ var_list <- function(topic,
                                       update_key = update_key,
                                       custom_llm_fn = custom_llm_fn)
 
-        variables_imp <- gsub("\n\n", " ", limit_integrated$output)  # remove "\n\n"  from LLM output
+        variables_imp <- gsub("\n\n", "\n", limit_integrated$output)  # replace empty lines from LLM output
         raw5_LLM <- c(prompt = prompt_limit_int, system_prompt = system_prompt, limit_integrated$raw_content)
         logprobs5 <- limit_integrated$top5_tokens
 
@@ -428,8 +424,9 @@ var_list <- function(topic,
       tryCatch({
         #Clean the output text
         split_text <- strsplit(variables_imp, split = "\n") # Split the string by newline character
-        variables_f <- lapply(split_text, function(x) sub("^\\s*[0-9]+\\.\\s+", "", x))
+        variables_f <- lapply(split_text, function(x) gsub("\\*\\*", "", sub("^\\s*([0-9]+[.)]|[-*])\\s+", "", x)))
         variables_f <- lapply(variables_f, function(x) trimws(x))
+        variables_f <- lapply(variables_f, function(x) x[nzchar(x)]) # remove empty lines
 
       }, error = function(e) {
         cat(paste0("Warning: Unable to process LLM output -> ", e$message, "."),
@@ -451,125 +448,37 @@ var_list <- function(topic,
 
   # Initialize the output list
   output <- list()
-  flattened_df_raw1_LLM <- NULL
-  flattened_df_raw2_LLM <- NULL
-  flattened_df_raw3_LLM <- NULL
-  flattened_df_raw4_LLM <- NULL
-  flattened_df_raw5_LLM <- NULL
-
 
   # Add raw_LLM to output
   tryCatch({
-    # Initialize empty dataframe
-    flattened_df_raw1_LLM <- data.frame(function_part = character(),
-                                        iteration = integer(),
-                                        LLM_model = character(),
-                                        prompt = character(),
-                                        system_prompt = character(),
-                                        content = character(),
-                                        finish_reason = character(),
-                                        prompt_tokens = numeric(),
-                                        answer_tokens = numeric(),
-                                        total_tokens = numeric(),
-                                        error = character(),
-                                        stringsAsFactors = FALSE)
+    # Build one row of raw LLM output (missing fields after an error or a skipped step become NA)
+    raw_row <- function(r, part, it) {
+      data.frame(function_part = part,
+                 iteration = it,
+                 LLM_model = .val(r$LLM_model),
+                 prompt = .val(r$prompt),
+                 system_prompt = .val(r$system_prompt),
+                 content = .val(r$content),
+                 finish_reason = .val(r$finish_reason),
+                 prompt_tokens = .val(r$prompt_tokens),
+                 answer_tokens = .val(r$answer_tokens),
+                 total_tokens = .val(r$total_tokens),
+                 error = if (is.null(r$error)) NA else as.character(unlist(r$error)[1]),
+                 stringsAsFactors = FALSE)
+    }
 
-    # Flatten raw1
+    raw_rows <- list()
     for (i in seq_along(raw1_LLM)) {
-      temp <- raw1_LLM[[i]]
-      flattened_df_raw1_LLM <- rbind(flattened_df_raw1_LLM,
-                                     data.frame(function_part = "create_lists",
-                                                iteration = i,
-                                                LLM_model = temp$LLM_model,
-                                                prompt = temp$prompt,
-                                                system_prompt = temp$system_prompt,
-                                                content = temp$content,
-                                                finish_reason = temp$finish_reason,
-                                                prompt_tokens = temp$prompt_tokens,
-                                                answer_tokens = temp$answer_tokens,
-                                                total_tokens = temp$total_tokens,
-                                                error = ifelse(is.null(temp$error), NA, temp$error),
-                                                stringsAsFactors = FALSE))
+      raw_rows[[length(raw_rows) + 1]] <- raw_row(raw1_LLM[[i]], "create_lists", i)
     }
+    raw_rows[[length(raw_rows) + 1]] <- raw_row(raw2_LLM, "integrate_lists", 1)
+    raw_rows[[length(raw_rows) + 1]] <- raw_row(raw3_LLM, "add_vars", 1)
+    raw_rows[[length(raw_rows) + 1]] <- raw_row(raw4_LLM, "clean_list", 1)
+    raw_rows[[length(raw_rows) + 1]] <- raw_row(raw5_LLM, "limit_list", if (is.null(raw5_LLM)) 0 else 1)
 
-    # Flatten raw2
-    flattened_df_raw2_LLM <- data.frame(function_part = "integrate_lists",
-                                        iteration = 1,
-                                        LLM_model = raw2_LLM$LLM_model,
-                                        prompt = raw2_LLM$prompt,
-                                        system_prompt = raw2_LLM$system_prompt,
-                                        content = raw2_LLM$content,
-                                        finish_reason = raw2_LLM$finish_reason,
-                                        prompt_tokens = raw2_LLM$prompt_tokens,
-                                        answer_tokens = raw2_LLM$answer_tokens,
-                                        total_tokens = raw2_LLM$total_tokens,
-                                        error = ifelse(is.null(raw2_LLM$error), NA, raw2_LLM$error),
-                                        stringsAsFactors = FALSE)
+    # Combine all rows
+    raw_LLM_df <- do.call(rbind, raw_rows)
 
-    # Flatten raw3
-    flattened_df_raw3_LLM <- data.frame(function_part = "add_vars",
-                                        iteration = 1,
-                                        LLM_model = raw3_LLM$LLM_model,
-                                        prompt = raw3_LLM$prompt,
-                                        system_prompt = raw3_LLM$system_prompt,
-                                        content = raw3_LLM$content,
-                                        finish_reason = raw3_LLM$finish_reason,
-                                        prompt_tokens = raw3_LLM$prompt_tokens,
-                                        answer_tokens = raw3_LLM$answer_tokens,
-                                        total_tokens = raw3_LLM$total_tokens,
-                                        error = ifelse(is.null(raw3_LLM$error), NA, raw3_LLM$error),
-                                        stringsAsFactors = FALSE)
-
-    # Flatten raw4
-    flattened_df_raw4_LLM <- data.frame(function_part = "clean_list",
-                                        iteration = 1,
-                                        LLM_model = raw4_LLM$LLM_model,
-                                        prompt = raw4_LLM$prompt,
-                                        system_prompt = raw4_LLM$system_prompt,
-                                        content = raw4_LLM$content,
-                                        finish_reason = raw4_LLM$finish_reason,
-                                        prompt_tokens = raw4_LLM$prompt_tokens,
-                                        answer_tokens = raw4_LLM$answer_tokens,
-                                        total_tokens = raw4_LLM$total_tokens,
-                                        error = ifelse(is.null(raw4_LLM$error), NA, raw4_LLM$error),
-                                        stringsAsFactors = FALSE)
-
-
-    if (!is.null(raw5_LLM)) {
-      flattened_df_raw5_LLM <- data.frame(function_part = "limit_list",
-                                          iteration = 1,
-                                          LLM_model = raw5_LLM$LLM_model,
-                                          prompt = raw5_LLM$prompt,
-                                          system_prompt = raw5_LLM$system_prompt,
-                                          content = raw5_LLM$content,
-                                          finish_reason = raw5_LLM$finish_reason,
-                                          prompt_tokens = raw5_LLM$prompt_tokens,
-                                          answer_tokens = raw5_LLM$answer_tokens,
-                                          total_tokens = raw5_LLM$total_tokens,
-                                          error = ifelse(is.null(raw5_LLM$error), NA, raw5_LLM$error),
-                                          stringsAsFactors = FALSE)
-
-    } else {
-      flattened_df_raw5_LLM <- data.frame(function_part = "limit_list",
-                                          iteration = 0,
-                                          LLM_model = NA,
-                                          prompt = NA,
-                                          system_prompt = NA,
-                                          content = NA,
-                                          finish_reason = NA,
-                                          prompt_tokens = NA,
-                                          answer_tokens = NA,
-                                          total_tokens = NA,
-                                          error = NA,
-                                          stringsAsFactors = FALSE)
-    }
-
-    # Combine the five dataframes
-    raw_LLM_df <- rbind(flattened_df_raw1_LLM,
-                        flattened_df_raw2_LLM,
-                        flattened_df_raw3_LLM,
-                        flattened_df_raw4_LLM,
-                        flattened_df_raw5_LLM)
     output$raw_LLM <- raw_LLM_df
 
   }, error = function(e) {
@@ -603,21 +512,12 @@ var_list <- function(topic,
 
   })
 
-  # give openai error if there is no output at all
-  if (length(output) == 0) {
-    if (!is.null(raw1_LLM[[1]]$error$message)) {
-      stop(raw1_LLM[[1]]$error$message)
-    } else if (!is.null(raw1_LLM[[2]]$error$message)) {
-      stop(raw1_LLM[[2]]$error$message)
-    } else if (!is.null(raw2_LLM$error$message)) {
-      stop(raw2_LLM$error$message)
-    } else if (!is.null(raw3_LLM$error$message)) {
-      stop(raw3_LLM$error$message)
-    } else if (!is.null(raw4_LLM$error$message)) {
-      stop(raw4_LLM$error$message)
-    } else if (!is.null(raw5_LLM$error$message)) {
-      stop(raw5_LLM$error$message)
-    }
+  # give API error if no variables were produced at all
+  if (length(output$all_vars) == 0) {
+    errs <- unlist(c(lapply(raw1_LLM, function(r) r$error$message),
+                     list(raw2_LLM$error$message, raw3_LLM$error$message,
+                          raw4_LLM$error$message, raw5_LLM$error$message)))
+    if (length(errs) > 0) stop(errs[1], call. = FALSE)
   }
 
   return(output)

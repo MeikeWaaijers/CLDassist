@@ -1,0 +1,1819 @@
+http_interactions:
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total, X-OpenAI-Inference-Capacity-Reason
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d7995bbaf3fe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:53:47 GMT
+      openai-processing-ms: '5491'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999704'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_456abcaf26ca40bfa4e66faf3dfba248
+    body:
+      string: |-
+        {
+          "id": "resp_0c85c7ede63291da006b0042d6768c87d2a3273a44830afc76",
+          "object": "response",
+          "created_at": 1795179222,
+          "status": "completed",
+          "access_programs": null,
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1795179227,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
+          "incomplete_details": null,
+          "input_transformations": [],
+          "instructions": null,
+          "max_output_tokens": 2000,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-2025-04-14",
+          "moderation": null,
+          "output": [
+            {
+              "id": "ws_0c85c7ede63291da006b0042d7b2dc87d2bdb36ba59fe147ff",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "queries": [
+                  "scientific publications relationship frequency of substance use and mental health treatment access"
+                ],
+                "query": "scientific publications relationship frequency of substance use and mental health treatment access"
+              }
+            },
+            {
+              "id": "msg_0c85c7ede63291da006b0042d8f38c87d29859d3ca55ce6809",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 711,
+                      "start_index": 603,
+                      "title": "Understanding predictors of mental health and substance use treatment utilization among US adults: A repeated cross-sectional study",
+                      "url": "https://www.sciencedirect.com/science/article/pii/S2590113323000123?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1319,
+                      "start_index": 1226,
+                      "title": "Predictors of Substance Use Disorder and Mental Health Treatment Use Among Rural Adults using Stimulants over Three Years",
+                      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6711827/?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "Scientific studies have explored the relationship between the frequency of substance use and access to mental health treatment, revealing both positive associations and barriers to care.\n\nA study analyzing data from the 2017\u20132019 National Survey on Drug Use and Health found that individuals with substance use disorders (SUDs) but no mental illness had higher odds of receiving mental health treatment. This suggests that substance use may prompt individuals to seek mental health services, potentially due to the recognition of co-occurring issues or the impact of substance use on mental well-being. ([sciencedirect.com](https://www.sciencedirect.com/science/article/pii/S2590113323000123?utm_source=openai))\n\nConversely, research focusing on rural adults using stimulants over a three-year period identified several barriers to accessing mental health and SUD treatment. Factors such as being male, nonwhite, and having a prior history of treatment were associated with lower odds of utilizing these services. Additionally, individuals with greater legal problems and alcohol severity were more likely to seek treatment, indicating that external pressures and the severity of substance use may influence treatment access. ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC6711827/?utm_source=openai))\n\nThese findings highlight a complex relationship where the frequency and severity of substance use can both facilitate and hinder access to mental health treatment, influenced by demographic factors and external circumstances. "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 0.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 1
+            }
+          },
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_content_types": [
+                "text"
+              ],
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 400,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cache_write_tokens_details": {
+                "ttl_12h_tokens": 0,
+                "ttl_30m_tokens": 0
+              },
+              "cached_tokens": 0
+            },
+            "output_tokens": 315,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 715
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2026-11-20 12:53:47
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total, X-OpenAI-Inference-Capacity-Reason
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d7997edf40fe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:53:53 GMT
+      openai-processing-ms: '5927'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999629'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_56e66bcf43a544118a6cf91c4381d7c4
+    body:
+      string: |-
+        {
+          "id": "resp_00f45f70474e15df006b0042dc1eb487d2a10fdef31e16ef83",
+          "object": "response",
+          "created_at": 1795179228,
+          "status": "completed",
+          "access_programs": null,
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1795179233,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
+          "incomplete_details": null,
+          "input_transformations": [],
+          "instructions": null,
+          "max_output_tokens": 2000,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-2025-04-14",
+          "moderation": null,
+          "output": [
+            {
+              "id": "ws_00f45f70474e15df006b0042dd6ccc87d2a9d88f6d334dbae1",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "queries": [
+                  "scientific publications relationship between mental health treatment access and frequency of substance use"
+                ],
+                "query": "scientific publications relationship between mental health treatment access and frequency of substance use"
+              }
+            },
+            {
+              "id": "msg_00f45f70474e15df006b0042ded50487d2b62cc48add9338f4",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 742,
+                      "start_index": 630,
+                      "title": "The benefits of timely access to treatment: Substance use disorders, healthcare utilization and employment",
+                      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0167629626000603?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1287,
+                      "start_index": 1216,
+                      "title": "Treatment Use Among U.S. Adults with a Substance Use Disorder: Associations with Symptom Severity, Problem Self-Perception, Comorbid Mental Illness, and Mental Health Treatment",
+                      "url": "https://www.mdpi.com/1660-4601/22/4/640?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1768,
+                      "start_index": 1675,
+                      "title": "Treatment Access Barriers and Disparities Among Individuals with Co-occurring Mental Health and Substance Use Disorders: An Integrative Literature Review",
+                      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4695242/?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "Scientific studies have explored the relationship between access to mental health treatment and the frequency of substance use, revealing both direct and indirect associations.\n\n**Direct Associations:**\n\nResearch indicates that timely access to mental health services can lead to a reduction in substance use frequency. A study published in the *Journal of Health Economics* found that reducing wait times for substance use disorder treatment not only decreased the use of treatment services but also improved employment outcomes, suggesting that prompt access to care can mitigate the adverse effects of substance use disorders. ([sciencedirect.com](https://www.sciencedirect.com/science/article/abs/pii/S0167629626000603?utm_source=openai))\n\n**Indirect Associations:**\n\nAccess to mental health treatment is also linked to increased utilization of substance use treatment services. A study in the *International Journal of Environmental Research and Public Health* reported that individuals with substance use disorders who engaged in mental health treatment were more likely to seek substance use treatment, indicating that addressing mental health issues can facilitate engagement in substance use interventions. ([mdpi.com](https://www.mdpi.com/1660-4601/22/4/640?utm_source=openai))\n\n**Barriers to Access:**\n\nConversely, limited access to mental health services can exacerbate substance use. An integrative literature review highlighted that individuals with co-occurring mental health and substance use disorders often face personal and structural barriers to accessing treatment, leading to underutilization of services and potentially higher substance use frequency. ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC4695242/?utm_source=openai))\n\nIn summary, evidence suggests that improved access to mental health treatment is associated with reduced substance use frequency, while barriers to such access can lead to increased substance use. "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 0.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 1
+            }
+          },
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_content_types": [
+                "text"
+              ],
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 400,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cache_write_tokens_details": {
+                "ttl_12h_tokens": 0,
+                "ttl_30m_tokens": 0
+              },
+              "cached_tokens": 0
+            },
+            "output_tokens": 390,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 790
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2026-11-20 12:53:53
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total, X-OpenAI-Inference-Capacity-Reason
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d799a48c20fe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:53:58 GMT
+      openai-processing-ms: '4145'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999581'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_51c4951c085e41adab18749491f5f5a6
+    body:
+      string: |-
+        {
+          "id": "resp_0edc6b92bf13a3a2006b0042e2133c87d2bcd1f1605133c928",
+          "object": "response",
+          "created_at": 1795179234,
+          "status": "completed",
+          "access_programs": null,
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1795179237,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
+          "incomplete_details": null,
+          "input_transformations": [],
+          "instructions": null,
+          "max_output_tokens": 2000,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-2025-04-14",
+          "moderation": null,
+          "output": [
+            {
+              "id": "ws_0edc6b92bf13a3a2006b0042e27ff087d28c32c3c8c74eca56",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "queries": [
+                  "scientific publications relationship frequency of substance use family history of addiction"
+                ],
+                "query": "scientific publications relationship frequency of substance use family history of addiction"
+              }
+            },
+            {
+              "id": "msg_0edc6b92bf13a3a2006b0042e328b487d2b9c503d118a90675",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 875,
+                      "start_index": 781,
+                      "title": "Weighted Family History Density of Substance Use: Influence on Participant Substance Use Onset, Duration, and Escalation",
+                      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12211992/?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1534,
+                      "start_index": 1426,
+                      "title": "The intergenerational transmission of gambling and other addictive behaviors: Implications of the mediating effects of cross-addiction frequency and problems",
+                      "url": "https://www.sciencedirect.com/science/article/pii/S030646032200226X?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 2000,
+                      "start_index": 1912,
+                      "title": "Interrelationships among parental family history of substance misuse, delay discounting, and personal substance use.",
+                      "url": "https://pubmed.ncbi.nlm.nih.gov/26395990/?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "Scientific studies have explored the relationship between the frequency of substance use and a family history of addiction, yielding evidence that supports a positive association.\n\nA study published in 2025 examined the impact of Weighted Family History Density (WFHD) on substance use patterns. WFHD quantifies the prevalence of substance use disorders among first- and second-degree relatives. The findings indicated that higher WFHD is associated with earlier initiation, faster escalation to peak use, and prolonged duration of substance use. Specifically, each unit increase in WFHD corresponded to a 0.53-year earlier onset and a 0.48-year longer duration of substance use. Additionally, individuals with higher WFHD exhibited faster escalation to peak substance use levels. ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC12211992/?utm_source=openai))\n\nAnother study investigated the intergenerational transmission of addictive behaviors, focusing on the mediating effects of cross-addiction frequency and problems. The research demonstrated that parental and sibling engagement in gambling and substance use was related to higher frequency and problem severity of these behaviors in participants. Notably, the frequency of gambling and substance use mediated the relationship between family and household addictive behaviors and the severity of participants' gambling, alcohol, and drug use problems. ([sciencedirect.com](https://www.sciencedirect.com/science/article/pii/S030646032200226X?utm_source=openai))\n\nFurthermore, research on the interrelationships among parental family history of substance misuse, delay discounting, and personal substance use found that individuals with a parental history of substance misuse exhibited higher rates of substance use. This suggests that a family history of substance misuse is associated with increased substance use frequency in offspring. ([pubmed.ncbi.nlm.nih.gov](https://pubmed.ncbi.nlm.nih.gov/26395990/?utm_source=openai))\n\nThese studies collectively indicate a positive relationship between the frequency of substance use and a family history of addiction, highlighting the significance of familial influences on substance use behaviors. "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 0.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 1
+            }
+          },
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_content_types": [
+                "text"
+              ],
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 400,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cache_write_tokens_details": {
+                "ttl_12h_tokens": 0,
+                "ttl_30m_tokens": 0
+              },
+              "cached_tokens": 0
+            },
+            "output_tokens": 438,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 838
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2026-11-20 12:53:57
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total, X-OpenAI-Inference-Capacity-Reason
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d799bf1906fe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:54:04 GMT
+      openai-processing-ms: '5763'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999588'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_201f0348e409473eb3df6ed043c4effa
+    body:
+      string: |-
+        {
+          "id": "resp_04a77f9ebfb68e8a006b0042e652bc87d2a904b9b94239e331",
+          "object": "response",
+          "created_at": 1795179238,
+          "status": "completed",
+          "access_programs": null,
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1795179243,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
+          "incomplete_details": null,
+          "input_transformations": [],
+          "instructions": null,
+          "max_output_tokens": 2000,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-2025-04-14",
+          "moderation": null,
+          "output": [
+            {
+              "id": "ws_04a77f9ebfb68e8a006b0042e70d5487d29d0b77c041ea1870",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "queries": [
+                  "scientific publications family history of addiction frequency of substance use relationship"
+                ],
+                "query": "scientific publications family history of addiction frequency of substance use relationship"
+              }
+            },
+            {
+              "id": "msg_04a77f9ebfb68e8a006b0042e8732087d2a8098c477719f798",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 677,
+                      "start_index": 583,
+                      "title": "Weighted Family History Density of Substance Use: Influence on Participant Substance Use Onset, Duration, and Escalation",
+                      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12211992/?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1251,
+                      "start_index": 1143,
+                      "title": "The intergenerational transmission of gambling and other addictive behaviors: Implications of the mediating effects of cross-addiction frequency and problems",
+                      "url": "https://www.sciencedirect.com/science/article/pii/S030646032200226X?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1896,
+                      "start_index": 1812,
+                      "title": "Genetic nurture in intergenerational transmission of substance use",
+                      "url": "https://www.nature.com/articles/s41467-026-71175-8?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "Research indicates a significant relationship between a family history of substance use disorders (SUDs) and the frequency of substance use in individuals. Studies have found that individuals with a higher density of family members affected by SUDs tend to initiate substance use earlier, escalate usage more rapidly, and engage in prolonged periods of use. For instance, a study analyzing data from over 36,000 adults revealed that each unit increase in weighted family history density was associated with a 0.53-year earlier onset and a 0.48-year longer duration of substance use. ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC12211992/?utm_source=openai))\n\nAdditionally, research has demonstrated that both intergenerational (e.g., parents, grandparents) and intragenerational (e.g., siblings) transmission of addictive behaviors can influence an individual's substance use patterns. Perceptions of family or household members' engagement in gambling, alcohol use, drug use, and other addictive behaviors during youth have been linked to higher frequencies of these behaviors and increased problem severity in adulthood. ([sciencedirect.com](https://www.sciencedirect.com/science/article/pii/S030646032200226X?utm_source=openai))\n\nFurthermore, studies have explored the genetic and environmental mechanisms underlying this relationship. The concept of \"genetic nurture\" suggests that parental genetics can indirectly influence offspring substance use through the rearing environment. For example, a study utilizing polygenic scores found that genetic nurture significantly affects smoking behaviors, accounting for 22\u201326% of direct genetic transmission effects. This influence persists across adulthood, indicating a lasting impact of parental genetics on offspring substance use patterns. ([nature.com](https://www.nature.com/articles/s41467-026-71175-8?utm_source=openai))\n\nIn summary, evidence supports a positive association between a family history of addiction and increased frequency of substance use, influenced by both genetic predispositions and environmental factors within the family setting. "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 0.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 1
+            }
+          },
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_content_types": [
+                "text"
+              ],
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 400,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cache_write_tokens_details": {
+                "ttl_12h_tokens": 0,
+                "ttl_30m_tokens": 0
+              },
+              "cached_tokens": 0
+            },
+            "output_tokens": 431,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 831
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2026-11-20 12:54:03
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total, X-OpenAI-Inference-Capacity-Reason
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d799e3dad7fe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:54:08 GMT
+      openai-processing-ms: '4724'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999515'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_0f22b8f5bff74174aaa0060d5b7d17ad
+    body:
+      string: |-
+        {
+          "id": "resp_0a97ed99d51a52d4006b0042ec33cc87d2b2be44881f142481",
+          "object": "response",
+          "created_at": 1795179244,
+          "status": "completed",
+          "access_programs": null,
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1795179248,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
+          "incomplete_details": null,
+          "input_transformations": [],
+          "instructions": null,
+          "max_output_tokens": 2000,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-2025-04-14",
+          "moderation": null,
+          "output": [
+            {
+              "id": "ws_0a97ed99d51a52d4006b0042ec97b087d290a39c3445d34c92",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "queries": [
+                  "scientific publications relationship frequency of substance use and craving intensity addiction"
+                ],
+                "query": "scientific publications relationship frequency of substance use and craving intensity addiction"
+              }
+            },
+            {
+              "id": "msg_0a97ed99d51a52d4006b0042ed497887d2a950f01e384cecbc",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 779,
+                      "start_index": 691,
+                      "title": "Craving and substance use among patients with alcohol, tobacco, cannabis or heroin addiction: a comparison of substance- and person-specific cues",
+                      "url": "https://pubmed.ncbi.nlm.nih.gov/25688760/?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1309,
+                      "start_index": 1215,
+                      "title": "Craving mediates the association between affect and substance use in daily life among individuals with substance use disorders",
+                      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13312586/?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1730,
+                      "start_index": 1642,
+                      "title": "Craving dynamics and related cerebral substrates predict timing of use in alcohol, tobacco, and cannabis use disorders.",
+                      "url": "https://pubmed.ncbi.nlm.nih.gov/38389954/?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "Scientific studies have explored the relationship between the frequency of substance use and craving intensity, revealing a complex interplay that varies across individuals and substances.\n\n**Positive Association Between Craving Intensity and Subsequent Substance Use:**\n\nResearch indicates that higher craving intensity can predict increased substance use. A study involving patients with alcohol, tobacco, cannabis, or heroin addiction found that craving intensity was associated with the number of substance-specific and person-specific cues. Notably, craving intensity predicted increases in later substance use, suggesting a prospective link between craving and subsequent consumption. ([pubmed.ncbi.nlm.nih.gov](https://pubmed.ncbi.nlm.nih.gov/25688760/?utm_source=openai))\n\n**Craving as a Mediator Between Affect and Substance Use:**\n\nAnother study using ecological momentary assessment (EMA) demonstrated that craving mediates the relationship between affective states and substance use. Higher negative affect was associated with increased craving, leading to a greater likelihood of subsequent substance use. Conversely, higher positive affect was linked to reduced craving and a lower likelihood of use. ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC13312586/?utm_source=openai))\n\n**Craving Dynamics Predict Timing of Use:**\n\nResearch has also shown that craving dynamics and related cerebral substrates can predict the timing of substance use in individuals with alcohol, tobacco, and cannabis use disorders. This suggests that fluctuations in craving intensity are closely linked to when substance use occurs. ([pubmed.ncbi.nlm.nih.gov](https://pubmed.ncbi.nlm.nih.gov/38389954/?utm_source=openai))\n\n**Lack of Direct Association Between Frequency of Use and Craving Intensity:**\n\nWhile craving intensity can predict subsequent substance use, the direct relationship between the frequency of substance use and craving intensity is less clear. Some studies suggest that craving intensity is more closely related to situational factors, such as exposure to cues and affective states, rather than the mere frequency of use. This indicates that while craving can lead to increased use, frequent use does not necessarily result in higher craving intensity.\n\nIn summary, evidence supports a positive association where increased craving intensity can lead to higher substance use. However, the direct relationship between the frequency of substance use and craving intensity appears to be influenced by various factors, including individual differences, environmental cues, and emotional states. "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 0.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 1
+            }
+          },
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_content_types": [
+                "text"
+              ],
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 399,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cache_write_tokens_details": {
+                "ttl_12h_tokens": 0,
+                "ttl_30m_tokens": 0
+              },
+              "cached_tokens": 0
+            },
+            "output_tokens": 504,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 903
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2026-11-20 12:54:08
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total, X-OpenAI-Inference-Capacity-Reason
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d79a020e8bfe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:54:14 GMT
+      openai-processing-ms: '5894'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999336'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 1ms
+      x-request-id: req_d437e248a1bf4de6ac8af9d7f50c441b
+    body:
+      string: |-
+        {
+          "id": "resp_0aeee21e2e18235a006b0042f1055487d284adedb74d56b51d",
+          "object": "response",
+          "created_at": 1795179249,
+          "status": "completed",
+          "access_programs": null,
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1795179254,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
+          "incomplete_details": null,
+          "input_transformations": [],
+          "instructions": null,
+          "max_output_tokens": 2000,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-2025-04-14",
+          "moderation": null,
+          "output": [
+            {
+              "id": "ws_0aeee21e2e18235a006b0042f15c8487d2b5f9e5d38da572cb",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "queries": [
+                  "scientific publications relationship between craving intensity and frequency of substance use"
+                ],
+                "query": "scientific publications relationship between craving intensity and frequency of substance use"
+              }
+            },
+            {
+              "id": "msg_0aeee21e2e18235a006b0042f271ec87d293f27fbc4a137592",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 990,
+                      "start_index": 882,
+                      "title": "Predictors of craving and substance use among patients with alcohol, tobacco, cannabis or opiate addictions: Commonalities and specificities across substances",
+                      "url": "https://www.sciencedirect.com/science/article/pii/S0306460318300601?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1516,
+                      "start_index": 1423,
+                      "title": "A daily process examination of the bidirectional relationship between craving and alcohol consumption as measured via Interactive Voice Response (IVR)",
+                      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3815497/?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 2222,
+                      "start_index": 2097,
+                      "title": "Craving mediates the association between affect and substance use in daily life among individuals with substance use disorders",
+                      "url": "https://www.sciencedirect.com/science/article/pii/S277272462600048X?dgcid=rss_sd_all&utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 3002,
+                      "start_index": 2906,
+                      "title": "Relationship between craving and personality in treatment-seeking women with substance-related disorders",
+                      "url": "https://link.springer.com/article/10.1186/1471-244X-3-1?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "Scientific studies have extensively examined the relationship between craving intensity and the frequency of substance use, revealing a complex interplay that varies across substances and individual differences.\n\n**Positive Association Between Craving Intensity and Substance Use Frequency**\n\nResearch consistently indicates a positive correlation between craving intensity and subsequent substance use. A study by Serre et al. (2018) utilized Ecological Momentary Assessment (EMA) over a two-week period with 159 participants seeking treatment for alcohol, tobacco, cannabis, or opiate addiction. The findings demonstrated that higher craving intensity significantly predicted increased substance use in the following hours for alcohol, tobacco, and cannabis users. However, this predictive relationship was not observed in opiate users, suggesting substance-specific differences. ([sciencedirect.com](https://www.sciencedirect.com/science/article/pii/S0306460318300601?utm_source=openai))\n\nSimilarly, a study by Fazzino et al. (2013) employed daily reports via Interactive Voice Response (IVR) over 180 days with 246 heavy drinkers. The results revealed a bidirectional relationship: higher craving intensity predicted increased alcohol consumption the next day, and higher alcohol consumption predicted increased craving intensity the following day. Notably, this relationship was more pronounced in males than females. ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC3815497/?utm_source=openai))\n\n**Craving as a Mediator Between Affect and Substance Use**\n\nCraving also mediates the relationship between affective states and substance use. A study by Baillet et al. (2026) involving 36 adults with substance use disorders found that higher negative affect was associated with increased craving, leading to a greater likelihood of subsequent substance use. Conversely, higher positive affect was linked to reduced craving and a lower likelihood of substance use. These findings underscore the role of craving as a mediator between emotional states and substance use behaviors. ([sciencedirect.com](https://www.sciencedirect.com/science/article/pii/S277272462600048X?dgcid=rss_sd_all&utm_source=openai))\n\n**Variability Across Substances and Individual Differences**\n\nThe strength and nature of the craving-use relationship can vary depending on the substance and individual factors. For instance, the study by Serre et al. (2018) noted that while craving intensity predicted substance use for alcohol, tobacco, and cannabis users, this was not the case for opiate users. Additionally, personality traits such as impulsivity have been linked to higher craving levels, which in turn predict increased substance use. A study by Zilberman et al. (2003) found that in treatment-seeking women with substance-related disorders, higher impulsivity was associated with greater craving intensity. ([link.springer.com](https://link.springer.com/article/10.1186/1471-244X-3-1?utm_source=openai))\n\n**Conclusion**\n\nOverall, the evidence supports a positive association between craving intensity and the frequency of substance use, with craving often serving as a mediator between affective states and substance use behaviors. However, this relationship is influenced by the type of substance and individual differences, highlighting the need for personalized approaches in treatment and intervention strategies. "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 0.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 1
+            }
+          },
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_content_types": [
+                "text"
+              ],
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 399,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cache_write_tokens_details": {
+                "ttl_12h_tokens": 0,
+                "ttl_30m_tokens": 0
+              },
+              "cached_tokens": 0
+            },
+            "output_tokens": 683,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 1082
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2026-11-20 12:54:14
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total, X-OpenAI-Inference-Capacity-Reason
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d79a27bac9fe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:54:19 GMT
+      openai-processing-ms: '4055'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999617'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_081ee3d969d34d1589c84b43de796818
+    body:
+      string: |-
+        {
+          "id": "resp_0841a55f578c8a89006b0042f713d087d2b20c65e71093bf30",
+          "object": "response",
+          "created_at": 1795179255,
+          "status": "completed",
+          "access_programs": null,
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1795179258,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
+          "incomplete_details": null,
+          "input_transformations": [],
+          "instructions": null,
+          "max_output_tokens": 2000,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-2025-04-14",
+          "moderation": null,
+          "output": [
+            {
+              "id": "ws_0841a55f578c8a89006b0042f7881087d2866597515fbe7eb3",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "queries": [
+                  "relationship between frequency of substance use and withdrawal symptom severity scientific publications"
+                ],
+                "query": "relationship between frequency of substance use and withdrawal symptom severity scientific publications"
+              }
+            },
+            {
+              "id": "msg_0841a55f578c8a89006b0042f83eb487d29a1e0d9138cea7fe",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 704,
+                      "start_index": 611,
+                      "title": "Opioid withdrawal symptoms, frequency, and pain characteristics as correlates of health risk among people who inject drugs",
+                      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7259345/?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1190,
+                      "start_index": 1096,
+                      "title": "Factors associated with methamphetamine withdrawal symptoms among people who inject drugs",
+                      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12994592/?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1685,
+                      "start_index": 1578,
+                      "title": "Prevalence of Cannabis Withdrawal Symptoms Among People With Regular or Dependent Use of Cannabinoids: A Systematic Review and Meta-analysis",
+                      "url": "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2764234?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "Scientific studies have explored the relationship between the frequency of substance use and the severity of withdrawal symptoms, yielding varying results across different substances.\n\n**Opioids:**\nA study involving 814 people who inject drugs (PWID) found that 85% reported experiencing opioid withdrawal symptoms in the past six months. Notably, 29% reported withdrawal symptoms at least monthly, and 35% at least weekly. The study indicated that more frequent opioid use was associated with more frequent withdrawal symptoms, suggesting a positive relationship between use frequency and withdrawal severity. ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC7259345/?utm_source=openai))\n\n**Methamphetamine:**\nResearch on 595 PWID who regularly used methamphetamine revealed that 53% experienced withdrawal symptoms in the past six months, with 25% reporting weekly symptoms. The study found that more frequent methamphetamine use was positively associated with the presence of withdrawal symptoms, indicating a direct relationship between use frequency and withdrawal severity. ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC12994592/?utm_source=openai))\n\n**Cannabis:**\nA systematic review and meta-analysis encompassing 47 studies with 23,518 participants estimated that 47% of regular or dependent cannabis users experienced withdrawal symptoms. The analysis identified daily cannabis use as a factor associated with higher prevalence of withdrawal symptoms, suggesting a positive correlation between use frequency and withdrawal severity. ([jamanetwork.com](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2764234?utm_source=openai))\n\nIn summary, evidence across various substances indicates a positive relationship between the frequency of use and the severity of withdrawal symptoms. However, the strength and nature of this relationship can vary depending on the specific substance and individual differences. "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 0.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 1
+            }
+          },
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_content_types": [
+                "text"
+              ],
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 399,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cache_write_tokens_details": {
+                "ttl_12h_tokens": 0,
+                "ttl_30m_tokens": 0
+              },
+              "cached_tokens": 0
+            },
+            "output_tokens": 402,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 801
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2026-11-20 12:54:18
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total, X-OpenAI-Inference-Capacity-Reason
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d79a41dda1fe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:54:23 GMT
+      openai-processing-ms: '4387'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999602'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 0s
+      x-request-id: req_16f1496db2b94912ba481158d8bf3539
+    body:
+      string: |-
+        {
+          "id": "resp_0e13381b49e87e5b006b0042fb385087d289b1f1dadcc56084",
+          "object": "response",
+          "created_at": 1795179259,
+          "status": "completed",
+          "access_programs": null,
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1795179263,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
+          "incomplete_details": null,
+          "input_transformations": [],
+          "instructions": null,
+          "max_output_tokens": 2000,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-2025-04-14",
+          "moderation": null,
+          "output": [
+            {
+              "id": "ws_0e13381b49e87e5b006b0042fc471487d2bce9b4358bf6c1b6",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "queries": [
+                  "relationship between withdrawal symptom severity and frequency of substance use scientific publications"
+                ],
+                "query": "relationship between withdrawal symptom severity and frequency of substance use scientific publications"
+              }
+            },
+            {
+              "id": "msg_0e13381b49e87e5b006b0042fcdc2087d29c3485909a049a16",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 769,
+                      "start_index": 662,
+                      "title": "Prevalence of Cannabis Withdrawal Symptoms Among People With Regular or Dependent Use of Cannabinoids: A Systematic Review and Meta-analysis",
+                      "url": "https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2764234?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1232,
+                      "start_index": 1138,
+                      "title": "Factors associated with methamphetamine withdrawal symptoms among people who inject drugs",
+                      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12994592/?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1765,
+                      "start_index": 1673,
+                      "title": "Neurobiology and Symptomatology of Post-Acute Alcohol Withdrawal: A Mixed-Studies Systematic Review",
+                      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9798382?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "Scientific studies have explored the relationship between withdrawal symptom severity and the frequency of substance use across various substances, including cannabis, methamphetamine, and alcohol. The findings indicate that increased frequency of use is often associated with more severe withdrawal symptoms.\n\n**Cannabis:**\nA systematic review and meta-analysis encompassing 47 studies with 23,518 participants found that daily cannabis use was associated with a higher prevalence of cannabis withdrawal syndrome (CWS). The overall pooled prevalence of CWS was 47%, with daily users exhibiting a significantly higher prevalence compared to less frequent users. ([jamanetwork.com](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2764234?utm_source=openai))\n\n**Methamphetamine:**\nA study involving 595 people who inject drugs reported that 53% experienced methamphetamine withdrawal symptoms in the past six months. The presence of withdrawal symptoms was positively associated with more frequent methamphetamine use. Additionally, 25% reported weekly withdrawal symptoms, and 20% described them as very or extremely painful. ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC12994592/?utm_source=openai))\n\n**Alcohol:**\nResearch on post-acute alcohol withdrawal syndrome (PAWS) indicates that symptoms such as anxiety, depression, irritability, cognitive dysfunction, cravings, and sleep disturbances can persist for months after cessation. These symptoms are more prevalent among individuals with a history of heavy and prolonged alcohol use, suggesting a link between the frequency and intensity of alcohol consumption and withdrawal severity. ([pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC9798382?utm_source=openai))\n\nWhile these studies suggest a positive relationship between the frequency of substance use and withdrawal symptom severity, it's important to note that individual experiences can vary. Factors such as concurrent substance use, individual physiology, and psychological health can influence withdrawal experiences. "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 0.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 1
+            }
+          },
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_content_types": [
+                "text"
+              ],
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 399,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cache_write_tokens_details": {
+                "ttl_12h_tokens": 0,
+                "ttl_30m_tokens": 0
+              },
+              "cached_tokens": 0
+            },
+            "output_tokens": 417,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 816
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2026-11-20 12:54:23
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total, X-OpenAI-Inference-Capacity-Reason
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d79a5dbae6fe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:54:28 GMT
+      openai-processing-ms: '5189'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999391'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 1ms
+      x-request-id: req_c289938bed9d4895847db46b8d6f5eef
+    body:
+      string: |-
+        {
+          "id": "resp_08334696831b5755006b0042ffb21487d2b90f4dfc5c1f4784",
+          "object": "response",
+          "created_at": 1795179263,
+          "status": "completed",
+          "access_programs": null,
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1795179268,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
+          "incomplete_details": null,
+          "input_transformations": [],
+          "instructions": null,
+          "max_output_tokens": 2000,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-2025-04-14",
+          "moderation": null,
+          "output": [
+            {
+              "id": "ws_08334696831b5755006b004300287887d2b7ffcde008a33595",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "queries": [
+                  "scientific publications relationship frequency of substance use peer influence intensity"
+                ],
+                "query": "scientific publications relationship frequency of substance use peer influence intensity"
+              }
+            },
+            {
+              "id": "msg_08334696831b5755006b004300df4487d2aa9f8abeedf77acc",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 846,
+                      "start_index": 745,
+                      "title": "A meta-analysis study on peer influence and adolescent substance use",
+                      "url": "https://link.springer.com/article/10.1007/s12144-023-04944-z?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1532,
+                      "start_index": 1424,
+                      "title": "Over time relationships between early adolescent and peer substance use",
+                      "url": "https://www.sciencedirect.com/science/article/pii/S0306460305002364?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 2270,
+                      "start_index": 2169,
+                      "title": "What Moderates the Link Between Peers\u2019 and Individual\u2019s Substance Use in Adolescence? A Systematic Scoping Review",
+                      "url": "https://link.springer.com/article/10.1007/s40894-024-00247-x?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 2809,
+                      "start_index": 2701,
+                      "title": "Adolescent parties and substance use: A situational approach to peer influence",
+                      "url": "https://www.sciencedirect.com/science/article/pii/S0047235213000032?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "Research has extensively examined the relationship between the frequency of substance use and the intensity of peer influence, particularly among adolescents. Findings indicate that peer influence significantly affects adolescent substance use, with both unidirectional and bidirectional relationships observed.\n\n**Unidirectional Influence:**\n\nA meta-analysis by Watts et al. (2023) quantified the effect of peer influence on adolescent substance use. The study found a significant effect size (\u03b2 = .147, p < .001), indicating that adolescents tend to adjust their substance use behaviors to align with their peers' perceived or actual use. This suggests a unidirectional influence where peer behaviors directly impact individual substance use. ([link.springer.com](https://link.springer.com/article/10.1007/s12144-023-04944-z?utm_source=openai))\n\n**Bidirectional Influence:**\n\nLongitudinal studies have demonstrated reciprocal relationships between peer influence and adolescent substance use. For instance, research by Simons-Morton and Chen (2006) showed that initial adolescent substance use predicted an increase in the number of substance-using friends over time (selection effect), while the initial number of substance-using friends predicted substance use progression (socialization effect). This indicates a bidirectional relationship where both peer influence and individual behaviors mutually affect each other. ([sciencedirect.com](https://www.sciencedirect.com/science/article/pii/S0306460305002364?utm_source=openai))\n\n**Moderating Factors:**\n\nThe strength of peer influence on substance use can be moderated by various factors. A systematic scoping review by Rodr\u00edguez-Ruiz and Espejo-Siles (2024) identified elements such as emotional control, closeness to parents, school disapproval of substance use, and sport participation as factors that can attenuate the impact of peer substance use on adolescents. Conversely, factors like avoidant and anxious attachment, sibling's willingness to use substances, school troubles, peer support, or criminogenic settings can increase the likelihood of substance use among adolescents with substance-using peers. ([link.springer.com](https://link.springer.com/article/10.1007/s40894-024-00247-x?utm_source=openai))\n\n**Situational Context:**\n\nThe context in which peer interactions occur also plays a role. Gallupe and Bouchard (2013) found that higher levels of substance use are more likely to occur in smaller group settings, and that the amount friends drink or smoke at parties is strongly related to personal substance use. This suggests that the immediate social environment can influence the intensity of peer influence on substance use. ([sciencedirect.com](https://www.sciencedirect.com/science/article/pii/S0047235213000032?utm_source=openai))\n\nIn summary, scientific literature supports both unidirectional and bidirectional relationships between the frequency of substance use and peer influence intensity. The nature and strength of this relationship are influenced by individual characteristics, contextual factors, and the specific dynamics of peer interactions. "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 0.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 1
+            }
+          },
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_content_types": [
+                "text"
+              ],
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 399,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cache_write_tokens_details": {
+                "ttl_12h_tokens": 0,
+                "ttl_30m_tokens": 0
+              },
+              "cached_tokens": 0
+            },
+            "output_tokens": 628,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 1027
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2026-11-20 12:54:28
+- request:
+    method: POST
+    uri: https://api.openai.com/v1/responses
+  response:
+    status: 200
+    headers:
+      access-control-expose-headers:
+      - X-Request-ID, Server-Timing-Total, X-OpenAI-Inference-Capacity-Reason
+      - CF-Ray
+      - CF-Ray
+      alt-svc: h3=":443"; ma=86400
+      cf-cache-status: DYNAMIC
+      cf-ray: a5d79a7ecbdcfe62-AMS
+      content-encoding: gzip
+      content-type: application/json
+      date: Fri, 20 Nov 2026 12:54:34 GMT
+      openai-processing-ms: '5269'
+      openai-version: '2020-10-01'
+      server: cloudflare
+      strict-transport-security: max-age=31536000; includeSubDomains; preload
+      x-content-type-options: nosniff
+      x-ratelimit-limit-requests: '10000'
+      x-ratelimit-limit-tokens: '30000000'
+      x-ratelimit-remaining-requests: '9999'
+      x-ratelimit-remaining-tokens: '29999479'
+      x-ratelimit-reset-requests: 6ms
+      x-ratelimit-reset-tokens: 1ms
+      x-request-id: req_2988cdf39afc4154bd5ecbfc6e28831a
+    body:
+      string: |-
+        {
+          "id": "resp_050448f5f3735ccd006b004304fe3887d2af42d89bb5cfe3c2",
+          "object": "response",
+          "created_at": 1795179269,
+          "status": "completed",
+          "access_programs": null,
+          "background": false,
+          "billing": {
+            "payer": "developer"
+          },
+          "completed_at": 1795179273,
+          "error": null,
+          "frequency_penalty": 0.0,
+          "image": {
+            "context_compression": "disabled"
+          },
+          "incomplete_details": null,
+          "input_transformations": [],
+          "instructions": null,
+          "max_output_tokens": 2000,
+          "max_tool_calls": null,
+          "model": "gpt-4.1-2025-04-14",
+          "moderation": null,
+          "output": [
+            {
+              "id": "ws_050448f5f3735ccd006b0043056d2887d2adf058959a35022e",
+              "type": "web_search_call",
+              "status": "completed",
+              "action": {
+                "type": "search",
+                "queries": [
+                  "peer influence intensity frequency of substance use scientific publications"
+                ],
+                "query": "peer influence intensity frequency of substance use scientific publications"
+              }
+            },
+            {
+              "id": "msg_050448f5f3735ccd006b004306438087d2b281a1a96a1ae1ce",
+              "type": "message",
+              "status": "completed",
+              "content": [
+                {
+                  "type": "output_text",
+                  "annotations": [
+                    {
+                      "type": "url_citation",
+                      "end_index": 1026,
+                      "start_index": 905,
+                      "title": "A meta-analysis study on peer influence and adolescent substance use",
+                      "url": "https://link.springer.com/article/10.1007/s12144-023-04944-z?fromPaywallRec=true&utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 1682,
+                      "start_index": 1594,
+                      "title": "The influence of peers on young adult substance use.",
+                      "url": "https://pubmed.ncbi.nlm.nih.gov/12090677/?utm_source=openai"
+                    },
+                    {
+                      "type": "url_citation",
+                      "end_index": 2421,
+                      "start_index": 2309,
+                      "title": "A two-stage model of peer influence in adolescent substance use: individual and relationship-specific differences in susceptibility to influence",
+                      "url": "https://www.sciencedirect.com/science/article/abs/pii/S0306460302002563?utm_source=openai"
+                    }
+                  ],
+                  "logprobs": [],
+                  "text": "Scientific research has extensively examined the relationship between peer influence intensity and the frequency of substance use, particularly among adolescents and young adults. The consensus indicates a significant positive association: as peer influence intensifies, the frequency of substance use tends to increase.\n\nA comprehensive meta-analysis by Watts et al. (2023) synthesized data from 27 longitudinal studies involving over 28,000 adolescents. The findings revealed a significant effect of peer influence on adolescent substance use, with an average effect size of \u03b2 = .147 (p < .001). This suggests that adolescents are likely to adjust their substance use behaviors to align with their peers' perceived or actual use. The study also highlighted that this effect varies depending on the type of substance and whether peer influence is measured through perceived norms or actual peer reports. ([link.springer.com](https://link.springer.com/article/10.1007/s12144-023-04944-z?fromPaywallRec=true&utm_source=openai))\n\nSimilarly, Andrews et al. (2002) conducted a longitudinal study with 294 young adults aged 19 to 25, along with their same- and opposite-gender best friends or mates. The study found consistent similarities over time between individuals and their peers in cigarette use, alcohol consumption, binge drinking, and, in most cases, marijuana use. Prospective analyses indicated that peer use predicted young adults' cigarette use, binge drinking, and problematic substance use, underscoring the significant role of peer influence in young adult substance use behaviors. ([pubmed.ncbi.nlm.nih.gov](https://pubmed.ncbi.nlm.nih.gov/12090677/?utm_source=openai))\n\nHowever, it's important to note that the strength of peer influence can be moderated by various factors. For instance, Urberg et al. (2003) proposed a two-stage model of peer influence, emphasizing that individual and relationship-specific differences affect susceptibility to peer influence. Their study found that adolescents who did not value school achievement or spending time with parents were more likely to choose friends who smoked cigarettes more than they did. Additionally, high peer acceptance and quality friendships increased the likelihood of adolescents conforming to their friends' substance use behaviors. ([sciencedirect.com](https://www.sciencedirect.com/science/article/abs/pii/S0306460302002563?utm_source=openai))\n\nIn summary, the body of scientific literature supports a positive relationship between the intensity of peer influence and the frequency of substance use. This relationship is influenced by individual characteristics, the nature of peer relationships, and the specific substances involved. "
+                }
+              ],
+              "role": "assistant"
+            }
+          ],
+          "parallel_tool_calls": true,
+          "presence_penalty": 0.0,
+          "previous_response_id": null,
+          "prompt_cache_key": null,
+          "prompt_cache_retention": "in_memory",
+          "reasoning": {
+            "context": null,
+            "effort": null,
+            "summary": null
+          },
+          "safety_identifier": null,
+          "service_tier": "default",
+          "store": true,
+          "temperature": 0.0,
+          "text": {
+            "format": {
+              "type": "text"
+            },
+            "verbosity": "medium"
+          },
+          "tool_choice": "auto",
+          "tool_usage": {
+            "image_gen": {
+              "input_tokens": 0,
+              "input_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "output_tokens": 0,
+              "output_tokens_details": {
+                "image_tokens": 0,
+                "text_tokens": 0
+              },
+              "total_tokens": 0
+            },
+            "web_search": {
+              "num_requests": 1
+            }
+          },
+          "tools": [
+            {
+              "type": "web_search_preview",
+              "search_content_types": [
+                "text"
+              ],
+              "search_context_size": "medium",
+              "user_location": {
+                "type": "approximate",
+                "city": null,
+                "country": "US",
+                "region": null,
+                "timezone": null
+              }
+            }
+          ],
+          "top_logprobs": 0,
+          "top_p": 1.0,
+          "truncation": "disabled",
+          "usage": {
+            "input_tokens": 399,
+            "input_tokens_details": {
+              "cache_write_tokens": 0,
+              "cache_write_tokens_details": {
+                "ttl_12h_tokens": 0,
+                "ttl_30m_tokens": 0
+              },
+              "cached_tokens": 0
+            },
+            "output_tokens": 540,
+            "output_tokens_details": {
+              "reasoning_tokens": 0
+            },
+            "total_tokens": 939
+          },
+          "user": null,
+          "metadata": {}
+        }
+  recorded_at: 2026-11-20 12:54:33
+recorded_with: VCR-vcr/2.1.0

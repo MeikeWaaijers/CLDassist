@@ -6,7 +6,7 @@ test_that("search_literature() works", {
   skip_on_cran()
   vcr::use_cassette("search_literature", {
     literature <- CLDassist::search_literature(topic = "addiction",
-                                               edge_list = CLDassist::edge_lists$dir_sign_edge_list[1:5, 1:4]) # keep small for speed)
+                                               edge_list = CLDassist::edge_lists$sign_edge_list[1:5, 1:4]) # keep small for speed)
   })
   expect_true(!is.null(literature))
   expect_true(is.list(literature))

@@ -23,7 +23,7 @@ A list containing the following components:
       \item \code{total_tokens}: Total number of tokens used.
       \item \code{error}: Error message, if any occurred.
     }} \cr
-  \item \code{all_vars}: A vector containing the integrated variable list with 52 variables.
+  \item \code{all_vars}: A vector containing the integrated variable list with 44 variables.
   \item \code{final_list}: A vector containing the final variable list with 10 variables.
 }
 }

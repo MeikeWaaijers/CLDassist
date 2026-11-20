@@ -25,7 +25,7 @@ A list containing the following components:
       \item \code{total_tokens}: Total number of tokens used.
       \item \code{error}: Error message, if any occurred.
     }} \cr
-    \item \code{sign_df}: A dataframe with nine columns representing the probability of the presence, the direction, and the sign of causal relationships between various variable.
+    \item \code{sign_df}: A dataframe with nine columns representing the probability of the presence, the direction, and the sign of causal relationships between various variables.
     \describe{
     \itemize{
       \item \code{var1}: Variable 1 of a unique variable pair.
@@ -38,13 +38,14 @@ A list containing the following components:
       \item \code{prob_var2_pos}: Probability of a positive relationship where variable 2 is the cause.
       \item \code{prob_var2_neg}: Probability of a negative relationship where variable 2 is the cause.
     }} \cr
-  \item \code{edge_list}: An edge list for a \code{dir_sign_df} input.
+  \item \code{edge_list}: An edge list for a \code{sign_df} input (the \code{sign_edge_list} created by \code{\link{cld_plot}}).
     \describe{
     \itemize{
       \item \code{from}: Cause variable.
       \item \code{to}: Dependent variable.
-      \item \code{weight}: Probability of a causal relationship between the Cause and Dependent variable.
+      \item \code{weight}: The combined probability (the probability of a causal relationship multiplied by the direction probability).
       \item \code{sign}: Sign of the causal relationship (can be either "Positive", "Negative", or "Uncertain").
+      \item \code{color}: Color of the edge in the plot (blue for positive, red for negative, black for uncertain).
     }}
 }
 }
@@ -56,7 +57,7 @@ Generated using the OpenAI platform: \url{https://platform.openai.com}
 cld_example
 }
 \description{
-This data set contains an edge lists related to the topic of addiction.
+This data set contains example output of the \code{\link{cld}} function for the topic of addiction.
 The data was generated using the \code{\link{cld}} function and the "gpt-4o" Large Language Model (LLM).
 }
 \examples{
